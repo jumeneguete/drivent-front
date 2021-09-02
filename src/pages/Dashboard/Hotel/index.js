@@ -1,12 +1,13 @@
-import { useEffect } from "react";
 import Reject from "./Reject";
 import styled from "styled-components";
 
 export default function Hotel() {
+  const hasPaid = false;
+  const shouldReject = !hasPaid;
   return (
     <>
       <Header>Escolha de hotel e quarto</Header>
-      <Reject />
+      {shouldReject ? <Reject /> : <p>em breve</p>}
     </>
   );
 }
