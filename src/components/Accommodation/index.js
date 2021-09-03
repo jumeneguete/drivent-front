@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import Button from "../Form/Button";
 
 import EachHotel from "./EachHotel";
-import Rooms from "./Rooms";
+import roomsAvailables from "./roomsAvailables";
 import hotelsAvailables from "./hotelsAvailables";
 
 export default function Accommodation() {
   useEffect(() => {
     hotels = hotelsAvailables();
+    rooms = roomsAvailables();
   });
   const [hotels, setHotels] = useState([]);
   const [rooms, setRooms] = useState([]);
