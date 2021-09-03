@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import Accommodation from "../../../components/Accommodation";
+
 export default function Reject({ hotels }) {
   function NoPaymentMessage() {
     return (
@@ -11,17 +13,22 @@ export default function Reject({ hotels }) {
     );
   }
 
-  const noPayment = hotels.error === "Você precisa ter confirmado o pagamento antes de fazer a escolha de hospedagem";
+  const noPayment =
+    hotels.error ===
+    "Você precisa ter confirmado o pagamento antes de fazer a escolha de hospedagem";
 
   return (
-    <Wrapper>
-      {noPayment ? <NoPaymentMessage /> : "em breve"}
-    </Wrapper>
+    <>
+      <Wrapper avalilable={noPayment}>
+        {noPayment ? <NoPaymentMessage /> : null}
+      </Wrapper>
+      {!noPayment ? <Accommodation /> : null}
+    </>
   );
 }
 
 const Wrapper = styled.div`
-  display: flex;
+  display: ${(props) => (props.avalilable ? "flex" : "none")};
   justify-content: center;
   align-items: center;
   height: calc(100% - 80px);
