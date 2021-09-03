@@ -6,6 +6,7 @@ import Button from "../Form/Button";
 import EachHotel from "./EachHotel";
 import roomsAvailables from "./roomsAvailables";
 import hotelsAvailables from "./hotelsAvailables";
+import Rooms from "./Rooms";
 
 export default function Accommodation() {
   useEffect(() => {
