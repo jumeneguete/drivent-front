@@ -13,17 +13,22 @@ export default function Reject({ hotels }) {
     );
   }
 
-  const noPayment = hotels.error === "Você precisa ter confirmado o pagamento antes de fazer a escolha de hospedagem";
+  const noPayment =
+    hotels.error ===
+    "Você precisa ter confirmado o pagamento antes de fazer a escolha de hospedagem";
 
   return (
-    <Wrapper>
-      {noPayment ? <NoPaymentMessage /> : <Accommodation />}
-    </Wrapper>
+    <>
+      <Wrapper avalilable={noPayment}>
+        {noPayment ? <NoPaymentMessage /> : null}
+      </Wrapper>
+      {!noPayment ? <Accommodation /> : null}
+    </>
   );
 }
 
 const Wrapper = styled.div`
-  display: flex;
+  display: ${(props) => (props.avalilable ? "flex" : "none")};
   justify-content: center;
   align-items: center;
   height: calc(100% - 80px);

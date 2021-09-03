@@ -55,9 +55,9 @@ export default function Accommodation() {
 
 const StyledTypography = styled(Typography)`
   margin: ${(props) =>
-    props.type === "roomChoice" ? "52px 0 33px 0" : null}!important;
+    props.type === "roomChoice" ? "52px 0 33px 0" : "36px 0"}!important;
   margin-bottom: 20px !important;
-  color: "#8E8E8E";
+  color: ${props => props.variant === "h6"? "#8E8E8E": null}!important;
 `;
 
 const HotelContainer = styled.div`
