@@ -1,11 +1,7 @@
 import styled from "styled-components";
 
-export default function EachHotel({
-  name,
-  accommodationType,
-  beds,
-  image
-}) {
+export default function EachHotel({ hotelInformation }) {
+  const { name, accommodationsType, beds, image } = hotelInformation;
   return (
     <EachHotelContainer>
       <img src={image} />
@@ -13,15 +9,15 @@ export default function EachHotel({
       <p>
         <strong>Tipos de acomodação: </strong>
         <br />
-        {accommodationType.length === 1
-          ? accommodationType[0]
-          : accommodationType.length === 2
-            ? accommodationType[0] + " e " + accommodationType[1]
-            : accommodationType[0] +
+        {accommodationsType.length === 1
+          ? accommodationsType[0]
+          : accommodationsType.length === 2
+            ? accommodationsType[0] + " e " + accommodationsType[1]
+            : accommodationsType[0] +
             ", " +
-            accommodationType[1] +
+            accommodationsType[1] +
             " e " +
-            accommodationType[2]}
+            accommodationsType[2]}
       </p>
       <p>
         <strong>Vagas disponíveis: </strong>

@@ -10,7 +10,7 @@ export default function Accommodation() {
     {
       id: 1,
       name: "Driven Resort",
-      acomodationsType: ["Single", "Double"],
+      accommodationsType: ["Single", "Double"],
       beds: 103,
       image:
         "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
@@ -18,7 +18,7 @@ export default function Accommodation() {
     {
       id: 2,
       name: "Driven Palace",
-      acomodationsType: ["Single", "Double", "Triple"],
+      accommodationsType: ["Single", "Double", "Triple"],
       beds: 25,
       image:
         "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/f7/8b/38/exterior.jpg?w=900&h=-1&s=1",
@@ -26,7 +26,7 @@ export default function Accommodation() {
     {
       id: 3,
       name: "Driven World",
-      acomodationsType: ["Single", "Double"],
+      accommodationsType: ["Single", "Double"],
       beds: 2,
       image:
         "https://imgcy.trivago.com/c_lfill,d_dummy.jpeg,e_sharpen:60,f_auto,h_450,q_auto,w_450/itemimages/96/95/96959_v6.jpeg",
@@ -39,7 +39,7 @@ export default function Accommodation() {
       <StyledTypography variant="h4">
         Escolha de hotel e quarto
       </StyledTypography>
-      <StyledTypography variant="h6">
+      <StyledTypography variant="h6" type={"hotelChoice"}>
         Primeiro, escolha seu hotel
       </StyledTypography>
       <HotelContainer>
@@ -47,21 +47,22 @@ export default function Accommodation() {
           <StyledButton onClick={() => setChosenHotel(n.id)} state={chosenHotel === n.id? true: false}>
             <EachHotel
               key={n.id}
-              name={n.name}
-              accommodationType={n.acomodationsType}
-              beds={n.beds}
-              image={n.image}
+              hotelInformation={n}
             />
           </StyledButton>
         ))}
       </HotelContainer>
+      <StyledTypography variant="h6" type={"roomChoice"} hidden={!chosenHotel}>
+        Ótima pedida! Agora escolha seu quarto:
+      </StyledTypography>
     </>
   );
 }
 
 const StyledTypography = styled(Typography)`
+  margin: ${(props) => (props.type === "roomChoice" ? "52px 0 33px 0" : null)}!important;
   margin-bottom: ${(props) =>
-    props.variant === "h6" ? "-18px" : "20px"} !important;
+    props.type === "hotelChoice" ? "-18px" : "20px"} !important;
   color: ${(props) => (props.variant === "h6" ? "#8E8E8E" : null)};
 `;
 
