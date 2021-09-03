@@ -33,7 +33,6 @@ export default function Accommodation() {
     },
   ];
   const [chosenHotel, setChosenHotel] = useState(0);
-  console.log(chosenHotel);
 
   return (
     <>
