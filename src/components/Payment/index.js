@@ -27,19 +27,24 @@ export default function Payment() {
         value={modality}
       />
       {
-        modality && 
-        <OptionsField
-          title="Ótimo! Agora escolha sua modalidade de hospedagem" 
-          textOptionOne="Sem Hotel"
-          valueOptionOne={0}
-          textOptionTwo="Com Hotel"
-          valueOptionTwo={350}
-          onClick={setHasHotel}
-          value={hasHotel}
-        />
+        modality && modality !== "Online" ?
+          <OptionsField
+            title="Ótimo! Agora escolha sua modalidade de hospedagem" 
+            textOptionOne="Sem Hotel"
+            valueOptionOne={0}
+            textOptionTwo="Com Hotel"
+            valueOptionTwo={350}
+            onClick={setHasHotel}
+            value={hasHotel}
+          />
+          :
+          modality && <Footer>
+            <Title>Fechado! O total ficou em <Bold>R$ 100</Bold>. Agora é só confirmar:</Title>
+            <BookingButton>RESERVAR INGRESSO</BookingButton>
+          </Footer>
       }
       {
-        modality && hasHotel &&
+        modality && modality !== "Online" && hasHotel &&
         <Footer>
           <Title>Fechado! O total ficou em <Bold>R$ 600</Bold>. Agora é só confirmar:</Title>
           <BookingButton>RESERVAR INGRESSO</BookingButton>
