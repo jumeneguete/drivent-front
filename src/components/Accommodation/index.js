@@ -63,63 +63,64 @@ export default function Accommodation() {
       guests: [32],
     },
     {
-      id: 1,
+      id: 5,
       hotelId: 1,
       name: 105,
       beds: 2,
       guests: [],
     },
     {
-      id: 2,
+      id: 6,
       hotelId: 1,
       name: 106,
       beds: 1,
       guests: [],
     },
     {
-      id: 3,
+      id: 7,
       hotelId: 1,
       name: 107,
       beds: 3,
       guests: [23, 22, 21],
     },
     {
-      id: 4,
+      id: 8,
       hotelId: 1,
       name: 108,
       beds: 2,
       guests: [32],
     },
     {
-      id: 1,
+      id: 9,
       hotelId: 1,
       name: 109,
       beds: 2,
       guests: [],
     },
     {
-      id: 2,
+      id: 10,
       hotelId: 1,
       name: 110,
       beds: 1,
       guests: [],
     },
     {
-      id: 3,
+      id: 11,
       hotelId: 1,
       name: 111,
       beds: 2,
       guests: [23, 22],
     },
     {
-      id: 4,
+      id: 12,
       hotelId: 1,
       name: 112,
       beds: 3,
       guests: [32],
     },
   ];
-  const [chosenHotel, setChosenHotel] = useState(0);
+  const [chosenHotel, setChosenHotel] = useState(null);
+  const [chosenRoom, setChosenRoom] = useState(null);
 
   return (
     <>
@@ -134,6 +135,7 @@ export default function Accommodation() {
           <StyledButton
             onClick={() => setChosenHotel(n.id)}
             state={chosenHotel === n.id ? true : false}
+            key={n.id}
           >
             <EachHotel key={n.id} hotelInformation={n} />
           </StyledButton>
@@ -144,7 +146,7 @@ export default function Accommodation() {
       </StyledTypography>
       <RoomsContainer hidden={!chosenHotel}>
         {roomsAvailables.map((n) => (
-          <Rooms key={n.id} roomInformation={n} />
+          <Rooms key={n.id} roomInformation={n} setChosenRoom={setChosenRoom} chosenRoom={chosenRoom}/>
         ))}
       </RoomsContainer>
     </>
