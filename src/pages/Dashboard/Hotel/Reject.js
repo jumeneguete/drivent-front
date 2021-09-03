@@ -11,7 +11,7 @@ export default function Reject({ hotels }) {
     );
   }
 
-  const noPayment = hotels.error === "Cannot pick hotel without paying";
+  const noPayment = hotels.error === "Você precisa ter confirmado o pagamento antes de fazer a escolha de hospedagem";
 
   return (
     <Wrapper>

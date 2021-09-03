@@ -2,6 +2,7 @@ import Reject from "./Reject";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
+import { toast } from "react-toastify";
 
 class Hotels {
   constructor(error, hotels) {
@@ -20,10 +21,21 @@ export default function Hotel() {
       .then(({ data: hotels }) => {
         setHotels(new Hotels(null, hotels));
       })
-      .catch((err) => {
-        const message = err.response.data.message;
-        console.log(message);
-        setHotels(new Hotels(message, []));
+      .catch((error) => {
+        /* eslint-disable-next-line no-console */
+        console.error(error);
+        
+        const details = error.response.data.details;
+
+        if (error.response) {
+          for (const detail of details) {
+            toast(detail);
+          }
+        } else {
+          toast("Não foi possível conectar ao servidor!");
+        }
+
+        setHotels(new Hotels(details.join(" "), []));
       });
   }, []);
 
