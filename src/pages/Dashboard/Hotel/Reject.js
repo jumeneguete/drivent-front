@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
-export default function Reject() {
+export default function Reject({ hotels }) {
+  const noPayment = hotels.error === "Cannot pick hotel without paying";
+
   return (
     <Wrapper>
-      <NoPaymentMessage />
+      {noPayment ? <NoPaymentMessage /> : "em breve"}
     </Wrapper>
   );
 }
