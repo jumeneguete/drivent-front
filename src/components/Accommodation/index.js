@@ -9,8 +9,10 @@ import hotelsAvailables from "./hotelsAvailables";
 
 export default function Accommodation() {
   useEffect(() => {
-    hotels = hotelsAvailables();
-    rooms = roomsAvailables();
+    const hotel = hotelsAvailables();
+    const room = roomsAvailables();
+    setRooms(room);
+    setHotels(hotel);
   });
   const [hotels, setHotels] = useState([]);
   const [rooms, setRooms] = useState([]);
