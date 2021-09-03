@@ -4,6 +4,7 @@ import { useState } from "react";
 import Button from "../Form/Button";
 
 import EachHotel from "./EachHotel";
+import Rooms from "./Rooms";
 
 export default function Accommodation() {
   const hotelsAvailables = [
@@ -32,6 +33,92 @@ export default function Accommodation() {
         "https://imgcy.trivago.com/c_lfill,d_dummy.jpeg,e_sharpen:60,f_auto,h_450,q_auto,w_450/itemimages/96/95/96959_v6.jpeg",
     },
   ];
+  const roomsAvailables = [
+    {
+      id: 1,
+      hotelId: 1,
+      name: 101,
+      beds: 2,
+      guests: [],
+    },
+    {
+      id: 2,
+      hotelId: 1,
+      name: 102,
+      beds: 1,
+      guests: [],
+    },
+    {
+      id: 3,
+      hotelId: 1,
+      name: 103,
+      beds: 2,
+      guests: [23, 22],
+    },
+    {
+      id: 4,
+      hotelId: 1,
+      name: 104,
+      beds: 2,
+      guests: [32],
+    },
+    {
+      id: 1,
+      hotelId: 1,
+      name: 105,
+      beds: 2,
+      guests: [],
+    },
+    {
+      id: 2,
+      hotelId: 1,
+      name: 106,
+      beds: 1,
+      guests: [],
+    },
+    {
+      id: 3,
+      hotelId: 1,
+      name: 107,
+      beds: 3,
+      guests: [23, 22, 21],
+    },
+    {
+      id: 4,
+      hotelId: 1,
+      name: 108,
+      beds: 2,
+      guests: [32],
+    },
+    {
+      id: 1,
+      hotelId: 1,
+      name: 109,
+      beds: 2,
+      guests: [],
+    },
+    {
+      id: 2,
+      hotelId: 1,
+      name: 110,
+      beds: 1,
+      guests: [],
+    },
+    {
+      id: 3,
+      hotelId: 1,
+      name: 111,
+      beds: 2,
+      guests: [23, 22],
+    },
+    {
+      id: 4,
+      hotelId: 1,
+      name: 112,
+      beds: 3,
+      guests: [32],
+    },
+  ];
   const [chosenHotel, setChosenHotel] = useState(0);
 
   return (
@@ -44,38 +131,58 @@ export default function Accommodation() {
       </StyledTypography>
       <HotelContainer>
         {hotelsAvailables.map((n) => (
-          <StyledButton onClick={() => setChosenHotel(n.id)} state={chosenHotel === n.id? true: false}>
-            <EachHotel
-              key={n.id}
-              hotelInformation={n}
-            />
+          <StyledButton
+            onClick={() => setChosenHotel(n.id)}
+            state={chosenHotel === n.id ? true : false}
+          >
+            <EachHotel key={n.id} hotelInformation={n} />
           </StyledButton>
         ))}
       </HotelContainer>
       <StyledTypography variant="h6" type={"roomChoice"} hidden={!chosenHotel}>
         Ótima pedida! Agora escolha seu quarto:
       </StyledTypography>
+      <RoomsContainer hidden={!chosenHotel}>
+        {roomsAvailables.map((n) => (
+          <Rooms key={n.id} roomInformation={n} />
+        ))}
+      </RoomsContainer>
     </>
   );
 }
 
 const StyledTypography = styled(Typography)`
-  margin: ${(props) => (props.type === "roomChoice" ? "52px 0 33px 0" : null)}!important;
-  margin-bottom: ${(props) =>
-    props.type === "hotelChoice" ? "-18px" : "20px"} !important;
+  margin: ${(props) =>
+    props.type === "roomChoice" ? "52px 0 33px 0" : null}!important;
+  margin-bottom: 20px !important;
   color: ${(props) => (props.variant === "h6" ? "#8E8E8E" : null)};
 `;
 
 const HotelContainer = styled.div`
-  margin-top: 40px !important;
   width: 100% !important;
-  >button{
+  > button {
     margin: 0 19px 0 0 !important;
     box-shadow: none;
-    padding: 14px 16px 0px 16px!important;
+    padding: 14px 16px 0px 16px !important;
   }
 `;
 
 const StyledButton = styled(Button)`
-  background-color: ${(props) => (props.state? "#FFEED2" : "#f1f1f1")}!important;
+  background-color: ${(props) =>
+    props.state ? "#FFEED2" : "#f1f1f1"}!important;
+`;
+
+const RoomsContainer = styled.div`
+  width: 100% !important;
+  align-items: center;
+  justify-content: space-between;
+  display: ${props => props.hidden? "none": "flex"};
+  flex-wrap: wrap;
+  > button {
+    width: calc(25% - 10px);
+    box-shadow: none;
+    border-radius: 10px;
+    border: 1px solid #CECECE;
+    margin-bottom: 8px;
+  }
 `;
