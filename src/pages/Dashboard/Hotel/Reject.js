@@ -1,22 +1,22 @@
 import styled from "styled-components";
 
 export default function Reject({ hotels }) {
+  function NoPaymentMessage() {
+    return (
+      <p>
+        Você precisa ter confirmado pagamento antes
+        <br />
+        de fazer a escolha de hospedagem
+      </p>
+    );
+  }
+
   const noPayment = hotels.error === "Cannot pick hotel without paying";
 
   return (
     <Wrapper>
       {noPayment ? <NoPaymentMessage /> : "em breve"}
     </Wrapper>
-  );
-}
-
-function NoPaymentMessage() {
-  return (
-    <p>
-      Você precisa ter confirmado pagamento antes
-      <br />
-      de fazer a escolha de hospedagem
-    </p>
   );
 }
 
