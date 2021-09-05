@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import Accommodation from "../../../components/Accommodation";
-
 export default function Reject({ hotels }) {
   function NoPaymentMessage() {
     return (
@@ -20,15 +18,14 @@ export default function Reject({ hotels }) {
   return (
     <>
       <Wrapper avalilable={noPayment}>
-        {noPayment ? <NoPaymentMessage /> : null}
+        {noPayment ? <NoPaymentMessage /> : "em breve"}
       </Wrapper>
-      {!noPayment ? <Accommodation /> : null}
     </>
   );
 }
 
 const Wrapper = styled.div`
-  display: ${(props) => (props.avalilable ? "flex" : "none")};
+  display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100% - 80px);

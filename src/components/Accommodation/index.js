@@ -8,17 +8,17 @@ import roomsAvailables from "./roomsAvailables";
 import hotelsAvailables from "./hotelsAvailables";
 import Rooms from "./Rooms";
 
-export default function Accommodation() {
-  useEffect(() => {
-    const hotel = hotelsAvailables();
-    const room = roomsAvailables();
-    setRooms(room);
-    setHotels(hotel);
-  });
-  const [hotels, setHotels] = useState([]);
+export default function Accommodation({ hotels }) {
   const [rooms, setRooms] = useState([]);
   const [chosenHotel, setChosenHotel] = useState(null);
   const [chosenRoom, setChosenRoom] = useState(null);
+  console.log(hotels);
+  useEffect(() => {
+    if (chosenHotel) {
+      const room = roomsAvailables();
+      setRooms(room);
+    }
+  }, [chosenHotel]);
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function Accommodation() {
         {hotels.map((n) => (
           <StyledButton
             onClick={() => setChosenHotel(n.id)}
-            state={chosenHotel === n.id ? true : false}
+            state={chosenHotel === n.id? true: false}
             key={n.id}
           >
             <EachHotel key={n.id} hotelInformation={n} />
@@ -57,7 +57,7 @@ const StyledTypography = styled(Typography)`
   margin: ${(props) =>
     props.type === "roomChoice" ? "52px 0 33px 0" : "36px 0"}!important;
   margin-bottom: 20px !important;
-  color: ${props => props.variant === "h6"? "#8E8E8E": null}!important;
+  color: ${(props) => (props.variant === "h6" ? "#8E8E8E" : null)}!important;
 `;
 
 const HotelContainer = styled.div`

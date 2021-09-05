@@ -28,7 +28,7 @@ export default function Rooms({ roomInformation, setChosenRoom, chosenRoom }) {
       chosen={id === chosenRoom}
     >
       <StyledTypography variant="h6">{name}</StyledTypography>
-      <BedContainer>
+      <span>
         {bedsAvailables.map((n, i) =>
           n === null ? (
             <BsPerson style={{ fontSize: "20px" }} key={i} />
@@ -36,7 +36,7 @@ export default function Rooms({ roomInformation, setChosenRoom, chosenRoom }) {
             <BsFillPersonFill style={{ fontSize: "20px" }} key={i} />
           )
         )}
-      </BedContainer>
+      </span>
     </RoomContainer>
   );
 }
@@ -57,5 +57,3 @@ const StyledTypography = styled(Typography)`
   font-size: 16px !important;
   color: #454545;
 `;
-
-const BedContainer = styled.span``;
