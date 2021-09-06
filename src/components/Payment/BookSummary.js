@@ -20,9 +20,7 @@ export default function BookSummary({ bookInfo }) {
   return (
     <Container>
       <Summary>
-        {capitalizeFirstLetter(bookInfo.ticket)} 
-        + 
-        {capitalizeFirstLetter(bookInfo.hotel)}
+        {capitalizeFirstLetter(bookInfo.ticket)} + {capitalizeFirstLetter(bookInfo.hotel)}
       </Summary>
       <TotalPrice>{transformToCurrency(bookInfo.price/100)}</TotalPrice>
     </Container>
@@ -39,6 +37,7 @@ const Container = styled.div`
   width: fit-content;
   gap: 8px;
   padding: 30px 50px;
+  margin: 17px 0 30px 0;
 `;
 
 const Summary = styled.span`

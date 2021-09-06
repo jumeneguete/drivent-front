@@ -51,7 +51,6 @@ export default function Payment({ enrollmentId }) {
             "price": 35000
           }
         } });
-        // history.push({ pathname: "/dashboard/payment/confirm", state: { bookInfo: ["aaaa", 1234, { Test: "Test" }] } });
         if(err.response) {
           const details = err.response.data?.details;
           
