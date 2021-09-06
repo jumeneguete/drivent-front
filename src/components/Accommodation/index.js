@@ -11,7 +11,7 @@ export default function Accommodation({ hotels }) {
   const [rooms, setRooms] = useState([]);
   const [chosenHotel, setChosenHotel] = useState(null);
   const [chosenRoom, setChosenRoom] = useState(null);
-  console.log(hotels);
+
   useEffect(() => {
     if (chosenHotel) {
       const rooms = roomsAvailable();
