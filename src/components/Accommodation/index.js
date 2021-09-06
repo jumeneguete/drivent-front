@@ -12,7 +12,7 @@ export default function Accommodation({ hotels }) {
   const [rooms, setRooms] = useState([]);
   const [chosenHotel, setChosenHotel] = useState(null);
   const [chosenRoom, setChosenRoom] = useState(null);
-  console.log(hotels);
+
   useEffect(() => {
     if (chosenHotel) {
       const room = roomsAvailables();
@@ -29,7 +29,7 @@ export default function Accommodation({ hotels }) {
         {hotels.map((n) => (
           <StyledButton
             onClick={() => setChosenHotel(n.id)}
-            state={chosenHotel === n.id? true: false}
+            state={chosenHotel === n.id? 1: 0}
             key={n.id}
           >
             <EachHotel key={n.id} hotelInformation={n} />

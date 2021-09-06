@@ -16,7 +16,6 @@ class Hotels {
 export default function Hotel() {
   const api = useApi();
   const [hotels, setHotels] = useState(new Hotels(true, []));
-  console.log(hotels.hotels);
   useEffect(() => {
     api.hotel
       .getHotelsByUser()
