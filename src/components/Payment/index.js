@@ -1,12 +1,18 @@
 import Typography from "@material-ui/core/Typography";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import OptionsField from "./OptionsField2";
+import OptionsField from "./OptionsField";
 import Button from "../Form/Button";
 import Footer from "./Footer";
 import { hotelOptions, tickets } from "./options";
+import { toast } from "react-toastify";
+import validateOptions from "./validateOptions";
+import useApi from "../../hooks/useApi";
+import { useHistory } from "react-router";
 
-export default function Payment() {
+export default function Payment({ enrollmentId }) {
+  const { payment } = useApi();
+  const history = useHistory();
   const [ticket, setTicket] = useState(tickets);
   const [hotelOption, setHotelOption] = useState(hotelOptions);
   const [optionsChosen, setOptionChosen] = useState({
@@ -19,7 +25,39 @@ export default function Payment() {
   }, [ticket, hotelOption]);
 
   function onSubmit() {
-    console.log(optionsChosen);
+    const validation = validateOptions(optionsChosen.ticket, optionsChosen.hotel);
+    if(validation) {
+      toast(validation);
+      return;
+    }
+    const body = createBody();
+    payment.postBookTicket(body)
+      .then(({ data }) => {
+        history.push("/dashboard/payments/confirm", { bookInfo: data });
+      })
+      .catch(err => {
+      //eslint-disable-next-line no-console
+        console.error(err);
+
+        if(err.response) {
+          const details = err.response.data?.details;
+          
+          if(Array.isArray(details))
+            for(const detail of details) toast(detail);
+          else
+            toast("Erro inesperado. Por favor, tente novamente mais tarde.");
+        } else {
+          toast("Não foi possível conectar ao servidor");
+        }
+      });
+  }
+
+  function createBody() {
+    return {
+      type: optionsChosen.ticket.modality.toLowerCase(),
+      hotel: optionsChosen.hotel?.modality === "Com Hotel",
+      enrollmentId
+    };
   }
 
   function updateChosenOptions() {

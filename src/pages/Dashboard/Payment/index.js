@@ -13,7 +13,7 @@ export default function Payment() {
   }, []);
 
   if(enrollment) {
-    return <PaymentContainer/>;
+    return <PaymentContainer enrollmentId={enrollment.id}/>;
   } else {
     return <NoEnrollment />;
   }
