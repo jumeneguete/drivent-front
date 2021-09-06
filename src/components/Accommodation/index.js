@@ -4,19 +4,18 @@ import { useEffect, useState } from "react";
 import Button from "../Form/Button";
 
 import EachHotel from "./EachHotel";
-import roomsAvailables from "./roomsAvailables";
-import hotelsAvailables from "./hotelsAvailables";
+import roomsAvailable from "./roomsAvailable";
 import Rooms from "./Rooms";
 
 export default function Accommodation({ hotels }) {
   const [rooms, setRooms] = useState([]);
   const [chosenHotel, setChosenHotel] = useState(null);
   const [chosenRoom, setChosenRoom] = useState(null);
-  console.log(hotels);
+  
   useEffect(() => {
     if (chosenHotel) {
-      const room = roomsAvailables();
-      setRooms(room);
+      const rooms = roomsAvailable();
+      setRooms(rooms);
     }
   }, [chosenHotel]);
 
@@ -29,7 +28,7 @@ export default function Accommodation({ hotels }) {
         {hotels.map((n) => (
           <StyledButton
             onClick={() => setChosenHotel(n.id)}
-            state={chosenHotel === n.id? true: false}
+            state={chosenHotel === n.id ? 1 : 0}
             key={n.id}
           >
             <EachHotel key={n.id} hotelInformation={n} />
@@ -40,10 +39,10 @@ export default function Accommodation({ hotels }) {
         Ótima pedida! Agora escolha seu quarto:
       </StyledTypography>
       <RoomsContainer hidden={!chosenHotel}>
-        {rooms.map((n) => (
+        {rooms.map((room) => (
           <Rooms
-            key={n.id}
-            roomInformation={n}
+            key={room.id}
+            roomInformation={room}
             setChosenRoom={setChosenRoom}
             chosenRoom={chosenRoom}
           />
