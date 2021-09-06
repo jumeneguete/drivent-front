@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import Button from "../Form/Button";
 
 import EachHotel from "./EachHotel";
-import roomsAvailables from "./roomsAvailables";
-import hotelsAvailables from "./hotelsAvailables";
+import roomsAvailable from "./roomsAvailable";
 import Rooms from "./Rooms";
 
 export default function Accommodation({ hotels }) {
@@ -15,8 +14,8 @@ export default function Accommodation({ hotels }) {
 
   useEffect(() => {
     if (chosenHotel) {
-      const room = roomsAvailables();
-      setRooms(room);
+      const rooms = roomsAvailable();
+      setRooms(rooms);
     }
   }, [chosenHotel]);
 
@@ -29,7 +28,7 @@ export default function Accommodation({ hotels }) {
         {hotels.map((n) => (
           <StyledButton
             onClick={() => setChosenHotel(n.id)}
-            state={chosenHotel === n.id? 1: 0}
+            state={chosenHotel === n.id ? 1 : 0}
             key={n.id}
           >
             <EachHotel key={n.id} hotelInformation={n} />
@@ -40,15 +39,18 @@ export default function Accommodation({ hotels }) {
         Ótima pedida! Agora escolha seu quarto:
       </StyledTypography>
       <RoomsContainer hidden={!chosenHotel}>
-        {rooms.map((n) => (
+        {rooms.map((room) => (
           <Rooms
-            key={n.id}
-            roomInformation={n}
+            key={room.id}
+            roomInformation={room}
             setChosenRoom={setChosenRoom}
             chosenRoom={chosenRoom}
           />
         ))}
       </RoomsContainer>
+      {chosenRoom ? (
+        <SubmitRoomSelection onClick={() => alert("reservado")}>Reservar Quarto</SubmitRoomSelection>
+      ) : null}
     </>
   );
 }
@@ -87,4 +89,9 @@ const RoomsContainer = styled.div`
     border: 1px solid #cecece;
     margin-bottom: 8px;
   }
+`;
+
+const SubmitRoomSelection = styled(Button)`
+  box-shadow: none !important;
+  margin: 46px 0 !important;
 `;
