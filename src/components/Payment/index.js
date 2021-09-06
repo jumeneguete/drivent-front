@@ -33,12 +33,25 @@ export default function Payment({ enrollmentId }) {
     const body = createBody();
     payment.postBookTicket(body)
       .then(({ data }) => {
-        history.push("/dashboard/payments/confirm", { bookInfo: data });
+        history.push("/dashboard/payment/confirm", { bookInfo: data });
       })
       .catch(err => {
       //eslint-disable-next-line no-console
         console.error(err);
-
+        history.push("/dashboard/payment/confirm", { bookInfo: {
+          "id": 1,
+          "isPaid": false,
+          "enrollmentId": 1,
+          "ticketOption": {
+            "type": "presencial",
+            "price": 25000
+          },
+          "hotelOption": {
+            "name": "com hotel",
+            "price": 35000
+          }
+        } });
+        // history.push({ pathname: "/dashboard/payment/confirm", state: { bookInfo: ["aaaa", 1234, { Test: "Test" }] } });
         if(err.response) {
           const details = err.response.data?.details;
           
@@ -78,7 +91,6 @@ export default function Payment({ enrollmentId }) {
 
   return (
     <>
-      <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
       <OptionsField 
         title="Primeiro, escolha sua modalidade de ingresso" 
         options={ticket}
