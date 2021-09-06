@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export default function EachHotel({ hotelInformation }) {
-  const { name, imgUrl, accommodationsType } = hotelInformation;
+  const { name, imgUrl, accommodationsType, beds } = hotelInformation;
   return (
     <EachHotelContainer>
       <img src={imgUrl} />
@@ -19,11 +19,11 @@ export default function EachHotel({ hotelInformation }) {
             " e " +
             accommodationsType[2]}
       </p>
-      {/*       <p>
+      <p>
         <strong>Vagas disponíveis: </strong>
         <br />
         {beds}
-      </p>  */}
+      </p>
     </EachHotelContainer>
   );
 }
