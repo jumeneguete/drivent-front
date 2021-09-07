@@ -1,4 +1,4 @@
-import Reject from "./Reject";
+import Reject from "../../../components/Dashboard/Hotel/Accommodation/Reject";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";

@@ -13,16 +13,6 @@ export default function Rooms({
 
   const user = useContext(UserContext);
   const userId = user.userData.user.id;
-  //   id: 2,
-  //   hotelId: 1,
-  //   number: 102,
-  //   bedCount: 1,
-  //   guests: [],
-  // },
-
-  // POST "/booking-room"
-  // body: {roomId: #}
-  // header: auth stuff
 
   useEffect(() => {
     let beds = [];
@@ -35,12 +25,7 @@ export default function Rooms({
         beds.push(null);
       }
     }
-    // const userIsIn = beds.indexOf(true);
-    // if (userIsIn !== -1) {
-    //   const last = beds[beds.length - 1];
-    //   beds[beds.length - 1] = true;
-    //   beds[userIsIn] = last;
-    // }
+
     setBedsAvailable(beds);
   }, [chosenRoom]);
 
@@ -68,7 +53,7 @@ export default function Rooms({
       );
     }
   }
-
+ 
   return (
     <RoomContainer
       disabled={!bedsAvailable.includes(null)}

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
 import { useEffect, useState } from "react";
 import Button from "../../../Form/Button";
+import { toast } from "react-toastify";
 
 import EachHotel from "./EachHotel";
 import Rooms from "./Rooms";
@@ -12,53 +13,84 @@ export default function Accommodation({ hotels }) {
   const api = useApi();
 
   const [rooms, setRooms] = useState([]);
+  const [hasBookedRoom, setHasBookedRoom] = useState(false);
   const [chosenHotel, setChosenHotel] = useState(null);
   const [chosenRoom, setChosenRoom] = useState(null);
 
   useEffect(() => {
     if (chosenHotel) {
-      api
-        .room.getRoomsByHotel(chosenHotel)
-        .then(({ data }) => {
-          setRooms(data);
-        });
+      api.room.getRoomsByHotel(chosenHotel).then(({ data }) => {
+        setRooms(data);
+      });
     }
   }, [chosenHotel]);
 
+  function submitRoomSelection() {
+    api.bookingRoom
+      .book(chosenRoom)
+      .then(() => {
+        setHasBookedRoom(true);
+      })
+      .catch((error) => {
+        /* eslint-disable-next-line no-console */
+        console.error(error);
+
+        const details = error.response.data.details;
+
+        if (error.response && error.response.details) {
+          for (const detail of details) {
+            toast(detail);
+          }
+        } else {
+          toast("Não foi possível reservar o quarto!");
+        }
+      });
+  }
+
   return (
     <>
-      <StyledTypography variant="h6" type={"hotelChoice"}>
-        Primeiro, escolha seu hotel
-      </StyledTypography>
-      <HotelContainer>
-        {hotels.map((n) => (
-          <StyledButton
-            onClick={() => setChosenHotel(n.id)}
-            state={chosenHotel === n.id ? 1 : 0}
-            key={n.id}
+      {hasBookedRoom ? (
+        "em breve"
+      ) : (
+        <>
+          <StyledTypography variant="h6" type={"hotelChoice"}>
+            Primeiro, escolha seu hotel
+          </StyledTypography>
+          <HotelContainer>
+            {hotels.map((n) => (
+              <StyledButton
+                onClick={() => setChosenHotel(n.id)}
+                state={chosenHotel === n.id ? 1 : 0}
+                key={n.id}
+              >
+                <EachHotel key={n.id} hotelInformation={n} />
+              </StyledButton>
+            ))}
+          </HotelContainer>
+          <StyledTypography
+            variant="h6"
+            type={"roomChoice"}
+            hidden={!chosenHotel}
           >
-            <EachHotel key={n.id} hotelInformation={n} />
-          </StyledButton>
-        ))}
-      </HotelContainer>
-      <StyledTypography variant="h6" type={"roomChoice"} hidden={!chosenHotel}>
-        Ótima pedida! Agora escolha seu quarto:
-      </StyledTypography>
-      <RoomsContainer hidden={!chosenHotel}>
-        {rooms.map((room) => (
-          <Rooms
-            key={room.id}
-            roomInformation={room}
-            setChosenRoom={setChosenRoom}
-            chosenRoom={chosenRoom}
-          />
-        ))}
-      </RoomsContainer>
-      {chosenRoom ? (
-        <SubmitRoomSelection onClick={() => alert("reservado")}>
-          Reservar Quarto
-        </SubmitRoomSelection>
-      ) : null}
+            Ótima pedida! Agora escolha seu quarto:
+          </StyledTypography>
+          <RoomsContainer hidden={!chosenHotel}>
+            {rooms.map((room) => (
+              <Rooms
+                key={room.id}
+                roomInformation={room}
+                setChosenRoom={setChosenRoom}
+                chosenRoom={chosenRoom}
+              />
+            ))}
+          </RoomsContainer>
+          {chosenRoom ? (
+            <SubmitRoomSelection onClick={submitRoomSelection}>
+              Reservar Quarto
+            </SubmitRoomSelection>
+          ) : null}
+        </>
+      )}
     </>
   );
 }
@@ -77,7 +109,7 @@ const HotelContainer = styled.div`
   flex-wrap: wrap;
   gap: 19px;
 
-  ${mediaQueries.ipad}{
+  ${mediaQueries.ipad} {
     justify-content: center;
   }
 
