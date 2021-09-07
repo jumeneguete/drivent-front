@@ -55,7 +55,7 @@ export default function Accommodation({ hotels }) {
         ))}
       </RoomsContainer>
       {chosenRoom ? (
-        <SubmitRoomSelection onClick={() => alert("reservado")}>
+        <SubmitRoomSelection onClick={() => api.bookingRoom.book(chosenRoom)}>
           Reservar Quarto
         </SubmitRoomSelection>
       ) : null}
