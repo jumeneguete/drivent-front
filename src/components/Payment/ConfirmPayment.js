@@ -170,7 +170,7 @@ export default function ConfirmPayment({ isAlreadyPaid, confirmPayment }) {
                     error={false}
                     helperText={null}
                     views={["month", "year"]}
-                    value={cardInfo.expiry && dayjs(cardInfo.expiry, "MM-YY").toString()}
+                    value={cardInfo.expiry ? dayjs(cardInfo.expiry, "MM-YY").toString() : null}
                     onChange={handleDateChange}
                     size="small"
                     onFocus={handleFocus}
