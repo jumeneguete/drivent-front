@@ -1,21 +1,27 @@
 import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
 import { useEffect, useState } from "react";
-import Button from "../Form/Button";
+import Button from "../../../Form/Button";
 
 import EachHotel from "./EachHotel";
-import roomsAvailable from "./roomsAvailable";
 import Rooms from "./Rooms";
+import useApi from "../../../../hooks/useApi";
+import mediaQueries from "../../../../mediaQueries";
 
 export default function Accommodation({ hotels }) {
+  const api = useApi();
+
   const [rooms, setRooms] = useState([]);
   const [chosenHotel, setChosenHotel] = useState(null);
   const [chosenRoom, setChosenRoom] = useState(null);
 
   useEffect(() => {
     if (chosenHotel) {
-      const rooms = roomsAvailable();
-      setRooms(rooms);
+      api
+        .room.getRoomsByHotel(chosenHotel)
+        .then(({ data }) => {
+          setRooms(data);
+        });
     }
   }, [chosenHotel]);
 
@@ -49,7 +55,9 @@ export default function Accommodation({ hotels }) {
         ))}
       </RoomsContainer>
       {chosenRoom ? (
-        <SubmitRoomSelection onClick={() => alert("reservado")}>Reservar Quarto</SubmitRoomSelection>
+        <SubmitRoomSelection onClick={() => alert("reservado")}>
+          Reservar Quarto
+        </SubmitRoomSelection>
       ) : null}
     </>
   );
@@ -64,8 +72,16 @@ const StyledTypography = styled(Typography)`
 
 const HotelContainer = styled.div`
   width: 100% !important;
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 19px;
+
+  ${mediaQueries.ipad}{
+    justify-content: center;
+  }
+
   > button {
-    margin: 0 19px 0 0 !important;
     box-shadow: none;
     padding: 14px 16px 0px 16px !important;
   }
@@ -92,6 +108,6 @@ const RoomsContainer = styled.div`
 `;
 
 const SubmitRoomSelection = styled(Button)`
-  box-shadow: none !important;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25) !important;
   margin: 46px 0 !important;
 `;

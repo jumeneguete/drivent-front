@@ -2,37 +2,51 @@ import styled from "styled-components";
 import { BsPerson, BsFillPersonFill } from "react-icons/bs";
 import Typography from "@material-ui/core/Typography";
 import { useEffect, useState, useContext } from "react";
-import UserContext from "../../contexts/UserContext";
+import UserContext from "../../../../contexts/UserContext";
 
-export default function Rooms({ roomInformation, setChosenRoom, chosenRoom }) {
-  const { id, number, bedCount, guests } = roomInformation;
+export default function Rooms({
+  roomInformation: room,
+  setChosenRoom,
+  chosenRoom,
+}) {
   const [bedsAvailable, setBedsAvailable] = useState([]);
 
   const user = useContext(UserContext);
   const userId = user.userData.user.id;
+  //   id: 2,
+  //   hotelId: 1,
+  //   number: 102,
+  //   bedCount: 1,
+  //   guests: [],
+  // },
 
+  // POST "/booking-room"
+  // body: {roomId: #}
+  // header: auth stuff
+
+  console.log(room);
   useEffect(() => {
     let beds = [];
-    for (let i = 0; i < bedCount; i++) {
-      if (guests[i] === userId) {
+    for (let i = 0; i < room.bedCount; i++) {
+      if (room.guests[i] === userId) {
         beds.push(true);
-      } else if (guests[i]) {
+      } else if (room.guests[i]) {
         beds.push(false);
       } else {
         beds.push(null);
       }
     }
-    const userIsIn = beds.indexOf(true);
-    if (userIsIn !== -1) {
-      const last = beds[beds.length - 1];
-      beds[beds.length - 1] = true;
-      beds[userIsIn] = last;
-    }
+    // const userIsIn = beds.indexOf(true);
+    // if (userIsIn !== -1) {
+    //   const last = beds[beds.length - 1];
+    //   beds[beds.length - 1] = true;
+    //   beds[userIsIn] = last;
+    // }
     setBedsAvailable(beds);
   }, [chosenRoom]);
 
   function fillBeds() {
-    if (id === chosenRoom) {
+    if (room.id === chosenRoom) {
       return bedsAvailable.map((bed, i) =>
         i === bedsAvailable.length - 1 ? (
           <BsFillPersonFill
@@ -60,14 +74,12 @@ export default function Rooms({ roomInformation, setChosenRoom, chosenRoom }) {
     <RoomContainer
       disabled={!bedsAvailable.includes(null)}
       onClick={() => {
-        setChosenRoom(id);
+        setChosenRoom(room.id);
       }}
-      isChosen={id === chosenRoom}
+      isChosen={room.id === chosenRoom}
     >
-      <StyledTypography variant="h6">{number}</StyledTypography>
-      <span>
-        {fillBeds()}
-      </span>
+      <StyledTypography variant="h6">{room.number}</StyledTypography>
+      <span>{fillBeds()}</span>
     </RoomContainer>
   );
 }
