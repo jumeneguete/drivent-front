@@ -24,7 +24,6 @@ export default function Rooms({
   // body: {roomId: #}
   // header: auth stuff
 
-  console.log(room);
   useEffect(() => {
     let beds = [];
     for (let i = 0; i < room.bedCount; i++) {
