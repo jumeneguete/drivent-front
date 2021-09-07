@@ -3,25 +3,47 @@ import styled from "styled-components";
 import OptionsField from "./OptionsField";
 import Button from "../Form/Button";
 import Footer from "./Footer";
-import { hotelOptions, tickets } from "./options";
 import { toast } from "react-toastify";
 import validateOptions from "./validateOptions";
 import useApi from "../../hooks/useApi";
 import { useHistory } from "react-router";
+import Loader from "react-loader-spinner";
 
 export default function Payment({ enrollmentId }) {
-  const { payment } = useApi();
+  const { booking } = useApi();
   const history = useHistory();
-  const [ticket, setTicket] = useState(tickets);
-  const [hotelOption, setHotelOption] = useState(hotelOptions);
+  const [ticket, setTicket] = useState(null);
+  const [hotelOption, setHotelOption] = useState(null);
   const [optionsChosen, setOptionChosen] = useState({
     ticket: undefined,
     hotel: undefined
   });
 
   useEffect(() => {
-    updateChosenOptions();
+    ticket || updateTicketOptions();
+    hotelOption || updateHotelOptions();
+    ticket && hotelOption && updateChosenOptions();
   }, [ticket, hotelOption]);
+
+  function updateTicketOptions() {
+    booking.getTicketOptions().then(({ data }) => setTicket(data.map(t => {
+      return {
+        modality: t.type,
+        price: t.price/100,
+        isSelected: false
+      };
+    }).reverse()));
+  }
+
+  function updateHotelOptions() {
+    booking.getHotelOptions().then(({ data }) => setHotelOption(data.map(h => {
+      return {
+        modality: h.name,
+        price: h.price/100,
+        isSelected: false
+      };
+    })));
+  }
 
   function onSubmit() {
     const validation = validateOptions(optionsChosen.ticket, optionsChosen.hotel);
@@ -30,7 +52,7 @@ export default function Payment({ enrollmentId }) {
       return;
     }
     const body = createBody();
-    payment.postBookTicket(body)
+    booking.postBookTicket(body)
       .then(({ data }) => {
         history.push("/dashboard/payment/confirm", { bookInfo: data });
       })
@@ -74,6 +96,8 @@ export default function Payment({ enrollmentId }) {
       hotel: newHotelOption
     });
   }
+
+  if(!(ticket && hotelOption)) return <Loader color="#FA4098" height={50} width={50} type="ThreeDots"/>;
 
   return (
     <>
