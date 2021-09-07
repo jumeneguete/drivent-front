@@ -8,27 +8,40 @@ import useApi from "../../../hooks/useApi";
 import ConfirmPayment from "../../../components/Payment/ConfirmPayment";
 
 export default function Payment() {
-  const [enrollment, setEnrollment] = useState(undefined);
-  const promise = useApi().enrollment.getPersonalInformations();
+  const { enrollment, payment } = useApi();
+  const [confirmEnrollment, setConfirmEnrollment] = useState(undefined);
+  const [confirmPayment, setConfirmPayment] = useState(undefined);
+  const promise = enrollment.getPersonalInformations();
   const match = useRouteMatch();
   
   useEffect(() => {
-    promise.then(({ data }) => setEnrollment(data));
+    promise.then(({ data }) => {
+      setConfirmEnrollment(data);
+      payment.getPaymentConfirmation(data.id)
+        .then(({ data }) => setConfirmPayment(data))
+        .catch(err => {
+          //eslint-disable-next-line no-console
+          console.error(err);
+        });
+    });
   }, []);
 
+  if(confirmPayment?.isPaid) {
+    return <ConfirmPayment isAlreadyPaid={true} confirmPayment={confirmPayment}/>; 
+  }
   return (
     <>
       <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
       <Switch>
         <Route path={`${match.path}`} exact>
-          {enrollment ?
-            <PaymentContainer enrollmentId={enrollment.id} />
+          {confirmEnrollment ?
+            <PaymentContainer enrollmentId={confirmEnrollment.id} />
             :
             <NoEnrollment />
           }
         </Route>
         <Route path={`${match.path}/confirm`} exact>
-          <ConfirmPayment />
+          <ConfirmPayment isPaid={false}/>
         </Route>
       </Switch>
     </>

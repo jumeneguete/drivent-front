@@ -12,10 +12,13 @@ import Button from "../Form/Button";
 import { Typography } from "@material-ui/core";
 import { toast } from "react-toastify";
 import useApi from "../../hooks/useApi";
+import { FaCheckCircle } from "react-icons/fa";
+import { IconContext } from "react-icons/lib";
 
-export default function ConfirmPayment() {
-  const bookInfo = useLocation().state.bookInfo;
+export default function ConfirmPayment({ isAlreadyPaid, confirmPayment }) {
   const { payment } = useApi();
+  const bookInfo = isAlreadyPaid ? confirmPayment : useLocation().state.bookInfo;
+  const [isPaid, setIsPaid] = useState(false);
   const [cardInfo, setCardInfo] = useState({
     cvc: "",
     expiry: "",
@@ -23,8 +26,6 @@ export default function ConfirmPayment() {
     name: "",
     number: "",
   });
-  
-  console.log(cardInfo, cardInfo.name.length);
 
   function handleChange({ target }) {
     if(target.name === "number")
@@ -61,7 +62,23 @@ export default function ConfirmPayment() {
       toast(validation);
       return;
     }
-    payment.postConfirmPayment(); // ARRUMAR A PARTIR DAQUI <==
+    payment.postConfirmPayment(bookInfo.id).then(({ data }) => {
+      setIsPaid(true);
+    }).catch((err) => {
+      //eslint-disable-next-line no-console
+      console.error(err);
+
+      if(err.response) {
+        const details = err.response.data?.details;
+        
+        if(Array.isArray(details))
+          for(const detail of details) toast(detail);
+        else
+          toast("Erro inesperado. Por favor, tente novamente mais tarde.");
+      } else {
+        toast("Não foi possível conectar ao servidor");
+      }
+    }); // ARRUMAR A PARTIR DAQUI <==
   }
 
   function validateData(body) {
@@ -91,79 +108,93 @@ export default function ConfirmPayment() {
         }}
       />
       <StyledTypography variant="h6">Pagamento</StyledTypography>
-      <CardContainer>
-        <Cards
-          cvc={cardInfo.cvc}
-          expiry={cardInfo.expiry}
-          focused={cardInfo.focus}
-          name={cardInfo.name}
-          number={cardInfo.number}
-        />
-        <Form>
-          <InputMask 
-            mask="9999.9999.9999.9999"
-            value={cardInfo.number}
-            onChange={handleChange}
-            onFocus={handleFocus}
-          >
-            {(inputProps) => 
-              <TextField
-                {...inputProps}  
-                variant="outlined"
-                label="Número do cartão"
-                error={false}
-                helperText="Ex.: 49..., 51..., 36..., 37..."
-                size="small"
-                name="number"
-                value={cardInfo.number}
-              />
-            }
-          </InputMask>
-          <TextField  
-            variant="outlined"
-            label="Nome"
-            error={false}
-            size="small"
-            name="name"
-            inputProps={{ maxLength: 40 }}
-            value={cardInfo.name}
-            onChange={handleChange}
-            onFocus={handleFocus}
-          />
-          <Division>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <DatePicker
-                name="validThru"
-                format="MM-yy"
-                label="Data de validade"
-                inputVariant="outlined"
-                clearable
-                error={false}
-                helperText={null}
-                views={["month", "year"]}
-                value={cardInfo.expiry && dayjs(cardInfo.expiry, "MM-YY").toString()}
-                onChange={handleDateChange}
-                size="small"
-                onFocus={handleFocus}
-                className="validThru"
-              />
-            </MuiPickersUtilsProvider>
-            <TextField  
-              name="cvc"
-              variant="outlined"
-              label="CVC"
-              error={false}
-              size="small"
-              value={cardInfo.cvc}
-              inputProps={{ maxLength: 4 }}
-              onChange={handleChange}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
+      {
+        isAlreadyPaid || isPaid ?
+          <PaymentConfirmed>
+            <IconContext.Provider value={{ className: "react-icons" }}>
+              <FaCheckCircle />
+            </IconContext.Provider>
+            <span>
+              <Bold>Pagamento confirmado</Bold><br />
+              Prossiga para escolha de hospedagem e atividades
+            </span>
+          </PaymentConfirmed>
+          :
+          <CardContainer>
+            <Cards
+              cvc={cardInfo.cvc}
+              expiry={cardInfo.expiry}
+              focused={cardInfo.focus}
+              name={cardInfo.name}
+              number={cardInfo.number}
             />
-          </Division>
-        </Form>
-      </CardContainer>
-      <CustomButton onClick={handleSubmit}>Finalizar pagamento</CustomButton>
+            <Form>
+              <InputMask 
+                mask="9999.9999.9999.9999"
+                value={cardInfo.number}
+                onChange={handleChange}
+                onFocus={handleFocus}
+              >
+                {(inputProps) => 
+                  <TextField
+                    {...inputProps}  
+                    variant="outlined"
+                    label="Número do cartão"
+                    error={false}
+                    helperText="Ex.: 49..., 51..., 36..., 37..."
+                    size="small"
+                    name="number"
+                    value={cardInfo.number}
+                  />
+                }
+              </InputMask>
+              <TextField  
+                variant="outlined"
+                label="Nome"
+                error={false}
+                size="small"
+                name="name"
+                inputProps={{ maxLength: 40 }}
+                value={cardInfo.name}
+                onChange={handleChange}
+                onFocus={handleFocus}
+              />
+              <Division>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <DatePicker
+                    name="validThru"
+                    format="MM-yy"
+                    label="Data de validade"
+                    inputVariant="outlined"
+                    clearable
+                    error={false}
+                    helperText={null}
+                    views={["month", "year"]}
+                    value={cardInfo.expiry && dayjs(cardInfo.expiry, "MM-YY").toString()}
+                    onChange={handleDateChange}
+                    size="small"
+                    onFocus={handleFocus}
+                    className="validThru"
+                  />
+                </MuiPickersUtilsProvider>
+                <TextField  
+                  name="cvc"
+                  variant="outlined"
+                  label="CVC"
+                  error={false}
+                  size="small"
+                  value={cardInfo.cvc}
+                  inputProps={{ maxLength: 4 }}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                />
+              </Division>
+            </Form>
+            <CustomButton onClick={handleSubmit}>Finalizar pagamento</CustomButton>
+          </CardContainer>
+      }
+      
     </Container>
   );
 }
@@ -174,8 +205,10 @@ const Container = styled.div`
 `;
 
 const CardContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   width: fit-content;
+  
   gap: 30px;
   margin: 17px 0 70px 0;
 `;
@@ -183,7 +216,7 @@ const CardContainer = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 80%;
   gap: 15px;
 `;
 
@@ -203,4 +236,22 @@ const CustomButton = styled(Button)`
 
 const StyledTypography = styled(Typography)`
   color: #8E8E8E;
+`;
+
+const PaymentConfirmed = styled.div`
+  display: flex;
+  margin-top: 17px;
+  align-items: center;
+  line-height: 20px;
+  color: #454545;
+
+  & .react-icons {
+    color: #36B853;
+    font-size: 35px;
+    margin-right: 10px;
+  }
+`;
+
+const Bold = styled.span`
+  font-weight: 700;
 `;

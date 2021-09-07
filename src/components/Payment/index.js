@@ -1,4 +1,3 @@
-import Typography from "@material-ui/core/Typography";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import OptionsField from "./OptionsField";
@@ -38,19 +37,7 @@ export default function Payment({ enrollmentId }) {
       .catch(err => {
       //eslint-disable-next-line no-console
         console.error(err);
-        history.push("/dashboard/payment/confirm", { bookInfo: {
-          "id": 1,
-          "isPaid": false,
-          "enrollmentId": 1,
-          "ticketOption": {
-            "type": "presencial",
-            "price": 25000
-          },
-          "hotelOption": {
-            "name": "com hotel",
-            "price": 35000
-          }
-        } });
+        
         if(err.response) {
           const details = err.response.data?.details;
           
@@ -66,7 +53,7 @@ export default function Payment({ enrollmentId }) {
 
   function createBody() {
     return {
-      type: optionsChosen.ticket.modality.toLowerCase(),
+      type: optionsChosen.ticket.modality,
       hotel: optionsChosen.hotel?.modality === "Com Hotel",
       enrollmentId
     };
@@ -121,14 +108,9 @@ export default function Payment({ enrollmentId }) {
           <BookingButton onClick={onSubmit}>RESERVAR INGRESSO</BookingButton>
         </Footer>
       }
-      
     </>
   );
 }
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
-`;
 
 const Title = styled.span`
   font-size: 20px;
