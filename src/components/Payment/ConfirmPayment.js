@@ -78,7 +78,7 @@ export default function ConfirmPayment({ isAlreadyPaid, confirmPayment }) {
       } else {
         toast("Não foi possível conectar ao servidor");
       }
-    }); // ARRUMAR A PARTIR DAQUI <==
+    });
   }
 
   function validateData(body) {

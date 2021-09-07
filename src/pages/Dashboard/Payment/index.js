@@ -6,11 +6,13 @@ import Typography from "@material-ui/core/Typography";
 import styled from "styled-components";
 import useApi from "../../../hooks/useApi";
 import ConfirmPayment from "../../../components/Payment/ConfirmPayment";
+import Loader from "../../../components/Loading";
 
 export default function Payment() {
   const { enrollment, payment } = useApi();
   const [confirmEnrollment, setConfirmEnrollment] = useState(undefined);
   const [confirmPayment, setConfirmPayment] = useState(undefined);
+  const [loading, setLoading] = useState(true);
   const promise = enrollment.getPersonalInformations();
   const match = useRouteMatch();
   
@@ -18,13 +20,23 @@ export default function Payment() {
     promise.then(({ data }) => {
       setConfirmEnrollment(data);
       payment.getPaymentConfirmation(data.id)
-        .then(({ data }) => setConfirmPayment(data))
+        .then(({ data }) => {
+          setConfirmPayment(data);
+          setLoading(false);
+        })
         .catch(err => {
           //eslint-disable-next-line no-console
           console.error(err);
+          setLoading(false);
         });
+    }).catch(() => {
+      setLoading(false);
     });
   }, []);
+
+  if(loading) {
+    return <Loader message={"Carregando"}/>;
+  }
 
   if(confirmPayment?.isPaid) {
     return <ConfirmPayment isAlreadyPaid={true} confirmPayment={confirmPayment}/>; 
