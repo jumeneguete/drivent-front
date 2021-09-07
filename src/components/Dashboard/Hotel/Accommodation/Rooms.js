@@ -69,7 +69,7 @@ export default function Rooms({
       );
     }
   }
-
+ 
   return (
     <RoomContainer
       disabled={!bedsAvailable.includes(null)}
