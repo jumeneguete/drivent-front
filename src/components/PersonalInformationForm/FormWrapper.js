@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import mediaQueries from "../../mediaQueries";
 
 export const FormWrapper = styled.form`
   display: flex;
@@ -9,7 +10,7 @@ export const FormWrapper = styled.form`
     margin: 0 10px 0 0;
   }
 
-  @media (max-width: 600px) {
+  ${mediaQueries.md} {
     > div {
       width: 100%;
       padding-left: 0px !important;

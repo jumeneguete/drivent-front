@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import mediaQueries from "../../../mediaQueries";
 
 export default function NavigationButton({ active, children }) {
   return (
@@ -34,7 +35,7 @@ const Button = styled.button`
     color: #124090;
   }
 
-  @media (max-width: 600px) {
+  ${mediaQueries.md} {
     height: 80px;
   }
 `;

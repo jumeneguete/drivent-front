@@ -6,7 +6,7 @@ import {
   useRouteMatch
 } from "react-router-dom";
 import styled from "styled-components";
-
+import mediaQueries from "../../mediaQueries";
 import EventInfoContext from "../../contexts/EventInfoContext";
 
 import NavigationBar from "../../components/Dashboard/NavigationBar";
@@ -63,7 +63,7 @@ const Container = styled.div`
   width: 100%;
   overflow-y: auto;
 
-  @media (max-width: 600px) {
+  ${mediaQueries.md} {
     height: calc(100vh - 80px);
     padding: 20px;
   }

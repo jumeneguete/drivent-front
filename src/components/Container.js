@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import mediaQueries from "../mediaQueries";
 
 export default styled.div`
   height: 100vh;
@@ -14,7 +15,7 @@ export default styled.div`
   display: flex;
   overflow: hidden;
 
-  @media (max-width: 600px) {
+  ${mediaQueries.md} {
     border-radius: 0;
     min-height: 100vh;
     height: auto;
