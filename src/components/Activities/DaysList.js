@@ -15,7 +15,7 @@ dayjs.updateLocale("pt-br", {
 });
 
 export default function DaysList() {
-  const { event } = useApi();
+  const { activities } = useApi();
   const [ days, setDays ] = useState([]);
   const [ loading, setIsLoading] = useState(true);
 
@@ -24,7 +24,7 @@ export default function DaysList() {
   }, []);
 
   function updateDays() {
-    event.getEventDays()
+    activities.getEventDays()
       .then(({ data }) => {
         setDays(data.map(day => { 
           return { ...day, isSelected: false };
