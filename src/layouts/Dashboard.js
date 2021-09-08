@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import mediaQueries from "../mediaQueries";
 import Page from "../components/Page";
 import { StyledContainer as Container } from "../components/Auth";
 
@@ -24,7 +24,7 @@ const StyledContainer = styled(Container)`
     text-align: initial;
   }
 
-  @media (max-width: 600px) {
+  ${mediaQueries.md} {
     flex-direction: column-reverse;
   }
 `;

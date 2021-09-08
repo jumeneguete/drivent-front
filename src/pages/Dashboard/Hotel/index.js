@@ -1,10 +1,10 @@
-import Reject from "./Reject";
+import Reject from "../../../components/Dashboard/Hotel/Accommodation/Reject";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
 import { toast } from "react-toastify";
 
-import Accommodation from "../../../components/Accommodation";
+import Accommodation from "../../../components/Dashboard/Hotel/Accommodation";
 
 class Hotels {
   constructor(error, hotels) {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import useInterval from "react-useinterval";
 import styled from "styled-components";
+import mediaQueries from "../../mediaQueries";
 
 export default function Timer({ time, onZero = () => 0 }) {
   const [timeRemaining, setTimeRemaining] = useState(diffToDate(time));
@@ -66,7 +67,7 @@ const Grid = styled.div`
     margin-left: 10px;
   }
 
-  @media (max-width: 600px) {
+  ${mediaQueries.md} {
     flex-direction: column;
   }
 `;

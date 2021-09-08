@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import mediaQueries from "../mediaQueries";
 
 export default styled.div`
   background: ${props => props.background};
@@ -20,7 +21,7 @@ export default styled.div`
     text-align: center;
   }
 
-  @media (max-width: 600px) {
+  ${mediaQueries.md} {
     padding: 0;
   }
 `;

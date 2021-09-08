@@ -4,6 +4,8 @@ import AuthApi from "../services/auth";
 import CepApi from "../services/CepApi";
 import EnrollmentApi from "../services/EnrollmentApi";
 import HotelApi from "../services/HotelApi";
+import RoomApi from "../services/RoomApi";
+import BookingRoomApi from "../services/BookingRoomApi";
 
 export default function useApi() {
   return {
@@ -12,6 +14,8 @@ export default function useApi() {
     auth: new AuthApi(),
     cep: new CepApi(),
     enrollment: new EnrollmentApi(),
-    hotel: new HotelApi()
+    hotel: new HotelApi(),
+    room: new RoomApi(),
+    bookingRoom: new BookingRoomApi()
   };
 }
