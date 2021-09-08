@@ -1,5 +1,5 @@
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
-
+import mediaQueries from "../../../mediaQueries";
 import styled from "styled-components";
 
 import {
@@ -73,7 +73,7 @@ const Container = styled.div`
     text-decoration: none;
   }
 
-  @media (max-width: 600px) {
+  ${mediaQueries.md} {
     width: 100%;
     height: 80px;
     flex-direction: row;

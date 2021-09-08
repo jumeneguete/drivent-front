@@ -4,7 +4,6 @@ import styled from "styled-components";
 export default function Footer({ children }) {
   return (
     <>
-      <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
       <MessageContainer>
         <Message>
           Você precisa completar sua inscrição antes <br/>
