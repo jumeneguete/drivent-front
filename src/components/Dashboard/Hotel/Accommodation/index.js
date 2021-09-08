@@ -14,6 +14,7 @@ export default function Accommodation({ hotels }) {
 
   const [rooms, setRooms] = useState([]);
   const [hasBookedRoom, setHasBookedRoom] = useState(false);
+  const [switchingRoom, setSwitchingRoom] = useState(false);
   const [chosenHotel, setChosenHotel] = useState(null);
   const [chosenRoom, setChosenRoom] = useState(null);
 
@@ -45,6 +46,13 @@ export default function Accommodation({ hotels }) {
           toast("Não foi possível reservar o quarto!");
         }
       });
+  }
+
+  function switchRoom() {
+    setSwitchingRoom(true);
+    setHasBookedRoom(false);
+    setChosenHotel(null);
+    setChosenRoom(null);
   }
 
   return (
