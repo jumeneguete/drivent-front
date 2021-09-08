@@ -32,7 +32,7 @@ export default function Dashboard() {
             <FillSubscription />
           </Route>
 
-          <Route path={`${match.path}/payment`} exact>
+          <Route path={`${match.path}/payment`}>
             <Payment />
           </Route>
 

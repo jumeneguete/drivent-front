@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap");
+@import "react-credit-cards/es/styles-compiled.css";
 
 * {
   box-sizing: border-box;
-  transition: all ease .2s;
+  transition: all ease 0.2s;
 }
 
 body {
