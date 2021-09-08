@@ -10,7 +10,7 @@ import Loader from "react-loader-spinner";
 dayjs.extend(UpdateLocale);
 dayjs.updateLocale("pt-br", {
   weekdays: [
-    "Doming", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"
+    "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"
   ]
 });
 
