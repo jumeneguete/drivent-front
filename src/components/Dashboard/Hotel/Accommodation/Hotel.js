@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-export default function EachHotel({ hotelInformation }) {
-  const { name, accommodationsType, beds, image } = hotelInformation;
+export default function Hotel({ hotelInformation }) {
+  const { name, imgUrl, accommodationsType, beds } = hotelInformation;
   return (
-    <EachHotelContainer>
-      <img src={image} />
+    <HotelContainer>
+      <img src={imgUrl} alt={name} />
       <h6>{name}</h6>
       <p>
         <strong>Tipos de acomodação: </strong>
@@ -24,11 +24,11 @@ export default function EachHotel({ hotelInformation }) {
         <br />
         {beds}
       </p>
-    </EachHotelContainer>
+    </HotelContainer>
   );
 }
 
-const EachHotelContainer = styled.div`
+const HotelContainer = styled.div`
   display: flex;
   flex-direction: column;
   text-align: start;
@@ -38,13 +38,13 @@ const EachHotelContainer = styled.div`
     font-size: 20px;
     margin: 10px 0;
   }
-  >p {
+  > p {
     font-size: 12px;
     line-height: 14px;
     text-align: start;
     margin-bottom: 14px;
   }
-  >img {
+  > img {
     width: 168px !important;
     height: 109px;
     margin: auto;
