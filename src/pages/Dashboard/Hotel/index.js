@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
 import { toast } from "react-toastify";
 
+import Accommodation from "../../../components/Accommodation";
+
 class Hotels {
   constructor(error, hotels) {
     this.error = error;
@@ -13,8 +15,7 @@ class Hotels {
 
 export default function Hotel() {
   const api = useApi();
-  const [hotels, setHotels] = useState(new Hotels(null, []));
-
+  const [hotels, setHotels] = useState(new Hotels(true, []));
   useEffect(() => {
     api.hotel
       .getHotelsByUser()
@@ -42,7 +43,7 @@ export default function Hotel() {
   return (
     <>
       <Header>Escolha de hotel e quarto</Header>
-      <Reject {...{ hotels }} />
+      {hotels.error? <Reject {...{ hotels }} />: <Accommodation hotels={hotels.hotels}/>}      
     </>
   );
 }
