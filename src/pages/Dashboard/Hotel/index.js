@@ -17,6 +17,7 @@ class Hotels {
 export default function Hotel() {
   const api = useApi();
   const [hotels, setHotels] = useState(new Hotels(true, []));
+
   useEffect(() => {
     api.hotel
       .getHotelsByUser()
@@ -25,7 +26,7 @@ export default function Hotel() {
       })
       .catch((error) => {
         /* eslint-disable-next-line no-console */
-        console.error(error);
+        console.error(error.response);
         
         const details = error.response.data.details;
 
@@ -37,7 +38,7 @@ export default function Hotel() {
           toast("Não foi possível conectar ao servidor!");
         }
 
-        setHotels(new Hotels(details.join(" "), []));
+        setHotels(new Hotels(error, []));
       });
   }, []);
 
