@@ -22,21 +22,21 @@ export default function BookingHotel({ hotel }) {
           <img src={imgUrl} alt={name} />
           <Typography variant="h6">{name}</Typography>
           <p>
-            <strong>Quarto reservado</strong> <br /> {number + " " + accomodationType}
+            <strong>Quarto reservado</strong> <br />{" "}
+            {number + " " + accomodationType}
           </p>
           <p>
-            <strong>Pessoas no seu quarto</strong> <br /> 
+            <strong>Pessoas no seu quarto</strong> <br />
             {bookingRoom.length === 1
               ? "Somente você"
-              : bookingRoom.length === bedCount
-                ? `Você e mais ${bedCount - 1} pessoas`
-                : bookingRoom.length < bedCount
-                  ? `Você e mais ${bookingRoom.length - 1} pessoas`
-                  : null}
+              : `Você e mais ${bookingRoom.length - 1} pessoas`
+            }
           </p>
         </div>
       </StyledHotelButton>
-      <StyledChangeRoomButton onClick={() => alert("em breve")}>Trocar de quarto</StyledChangeRoomButton>
+      <StyledChangeRoomButton onClick={() => alert("em breve")}>
+        Trocar de quarto
+      </StyledChangeRoomButton>
     </BookingHotelContainer>
   );
 }
@@ -60,10 +60,10 @@ const StyledHotelButton = styled(Button)`
     text-transform: capitalize !important;
     color: #343434;
   }
-  p{
+  p {
     line-height: 16px;
     margin: 14px 0 4px 0;
-    text-transform: initial!important;
+    text-transform: initial !important;
   }
 `;
 
