@@ -4,7 +4,7 @@ export default function EachHotel({ hotelInformation }) {
   const { name, imgUrl, accommodationsType, beds } = hotelInformation;
   return (
     <EachHotelContainer>
-      <img src={imgUrl} />
+      <img src={imgUrl} alt={name} />
       <h6>{name}</h6>
       <p>
         <strong>Tipos de acomodação: </strong>
