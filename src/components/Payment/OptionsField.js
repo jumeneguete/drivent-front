@@ -3,45 +3,36 @@ import styled from "styled-components";
 
 export default function Options({ 
   title,
-  textOptionOne, 
-  textOptionTwo, 
-  valueOptionOne, 
-  valueOptionTwo, 
-  onClick,
-  value
+  options,
+  setState
 }) {
-  const [optionOne, setOptionOne] = useState(false);
-  const [optionTwo, setOptionTwo] = useState(false);
-  
-  function handleSelection(event) {
-    if(event.currentTarget.id === "1") {
-      optionTwo && setOptionTwo(false);
-      setOptionOne(!optionOne);
-      updateOption(textOptionOne);
-    } else {
-      optionOne && setOptionOne(false);
-      setOptionTwo(!optionTwo);
-      updateOption(textOptionTwo);
+  function handleSelection(option, index) {
+    if (option.isSelected) option.isSelected = false;
+    else {
+      const optionTrue = options.find(option => option.isSelected);
+      if(optionTrue) optionTrue.isSelected = false;
+      option.isSelected = true;
     }
-  }
-
-  function updateOption(newValue) {
-    value && value === newValue ? onClick(null) : onClick(newValue);
+    setState([ ...options ]);
   }
 
   return (
     <Container>
       <Title>{title}</Title>
       <OptionsWrapper>
-        <Option id="1" isSelected={optionOne} onClick={handleSelection}>
-          <OptionText>{textOptionOne}</OptionText>
-          <OptionValue>{valueOptionOne.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</OptionValue>
-        </Option>
-        <Option id="2" isSelected={optionTwo} onClick={handleSelection}>
-          <OptionText>{textOptionTwo}</OptionText>
-          <OptionValue>{valueOptionTwo.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</OptionValue>
-        </Option>
-      </OptionsWrapper>
+        {
+          options.map((option, index) => {
+            return (
+              <Option key={index+option.price} isSelected={option.isSelected} onClick={() => handleSelection(option, index)}>
+                <OptionText>{option.modality}</OptionText>
+                <OptionValue>
+                  {option.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                </OptionValue>
+              </Option>
+            );
+          })
+        }
+      </OptionsWrapper> 
     </Container>
   );
 }

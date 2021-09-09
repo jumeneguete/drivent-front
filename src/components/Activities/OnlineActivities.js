@@ -1,22 +1,17 @@
-import Typography from "@material-ui/core/Typography";
 import styled from "styled-components";
 
-export default function Footer({ children }) {
+export default function OnlineActivities() {
   return (
     <>
       <MessageContainer>
-        <Message>
-          Você precisa completar sua inscrição antes <br/>
-          de prosseguir pra escolha de ingresso
+        <Message> 
+        Sua modalidade de ingresso não necessita escolher <br />
+        atividade. Você terá acesso a todas as atividades.
         </Message>
       </MessageContainer>
     </>
   );
 }
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
-`;
 
 const MessageContainer = styled.div`
   width: 100%;
