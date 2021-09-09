@@ -2,8 +2,10 @@ import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
 import Button from "../../../Form/Button";
 
-export default function BookingHotel({ booking }) {
-  const { id, bedCount, bookingRoom, hotel, number } = booking;
+export default function BookingHotel({ hotel }) {
+  const { id, name, imgUrl, rooms } = hotel;
+  const { number, bedCount, bookingRoom } = rooms[0];
+
   let accomodationType;
   bedCount === 1
     ? (accomodationType = "(Single)")
@@ -17,20 +19,24 @@ export default function BookingHotel({ booking }) {
       </StyledTypography>
       <StyledHotelButton disabled>
         <div>
-          <img src={hotel.imgUrl} alt={hotel.name} />
-          <Typography variant="h6">{hotel.name}</Typography>
+          <img src={imgUrl} alt={name} />
+          <Typography variant="h6">{name}</Typography>
           <p>
-            Quarto reservado <br /> {number + " " + accomodationType}
+            <strong>Quarto reservado</strong> <br /> {number + " " + accomodationType}
           </p>
           <p>
-            Pessoas no seu quarto <br /> Você{" "}
-            {bookingRoom.length < bedCount - 1
-              ? `e mais ${bookingRoom.length - bedCount - 1}`
-              : null}
+            <strong>Pessoas no seu quarto</strong> <br /> Você{" "}
+            {bookingRoom.length === 1
+              ? null
+              : bookingRoom.length === bedCount
+                ? `e mais ${bedCount - 1} pessoas`
+                : bookingRoom.length < bedCount
+                  ? `e mais ${bookingRoom.length - 1} pessoas`
+                  : null}
           </p>
         </div>
       </StyledHotelButton>
-      <StyledChangeRoomButton>Trocar de quarto</StyledChangeRoomButton>
+      <StyledChangeRoomButton onClick={() => alert("em breve")}>Trocar de quarto</StyledChangeRoomButton>
     </BookingHotelContainer>
   );
 }
@@ -53,6 +59,10 @@ const StyledHotelButton = styled(Button)`
     text-align: start;
     text-transform: capitalize !important;
     color: #343434;
+  }
+  p{
+    line-height: 16px;
+    margin: 14px 0 4px 0;
   }
 `;
 
