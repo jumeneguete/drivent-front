@@ -10,6 +10,14 @@ export default class BookingApi extends AuthenticatedApi {
     });
   }
 
+  getBookTicketByEnrollmentId(enrollmentId) {
+    return api.get(`/booking/${enrollmentId}/find`, {
+      headers: {
+        ...this.getAuthorizationHeader()
+      }
+    });
+  }
+
   getHotelOptions() {
     return api.get("/hotel-options", {
       headers: {
