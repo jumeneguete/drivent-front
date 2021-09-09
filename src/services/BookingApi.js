@@ -2,7 +2,7 @@ import AuthenticatedApi from "./AuthenticatedApi";
 import api from "./api";
 
 export default class BookingApi extends AuthenticatedApi {
-  postBookTicket(body) {
+  postBooking(body) {
     return api.post("/booking", body, {
       headers: {
         ...this.getAuthorizationHeader()
@@ -20,14 +20,6 @@ export default class BookingApi extends AuthenticatedApi {
 
   getTicketOptions() {
     return api.get("/ticket-options", {
-      headers: {
-        ...this.getAuthorizationHeader()
-      }
-    });
-  }
-
-  updateBookTicket(body, enrollmentId) {
-    return api.put(`booking/${enrollmentId}`, body, {
       headers: {
         ...this.getAuthorizationHeader()
       }

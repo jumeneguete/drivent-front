@@ -10,7 +10,7 @@ import { useHistory } from "react-router";
 import Loader from "react-loader-spinner";
 
 export default function Payment({ enrollmentId }) {
-  const { booking, payment } = useApi();
+  const { booking } = useApi();
   const history = useHistory();
   const [ticket, setTicket] = useState(null);
   const [hotelOption, setHotelOption] = useState(null);
@@ -51,37 +51,15 @@ export default function Payment({ enrollmentId }) {
       toast(validation);
       return;
     }
-    findPreviousBooking();
+    createOrUpdateBooking();
   }
 
-  async function findPreviousBooking() {
-    try{
-      await payment.getPaymentConfirmation(enrollmentId);
-      updateBooking();
-    } catch(err) {
-      //eslint-disable-next-line no-console
-      console.error(err.response);
-      if(err.response.status === 404) createNewBooking();
-    }
-  }
-
-  function updateBooking() {
-    const body = createBody();
-    delete body.enrollmentId;
-
-    booking.updateBookTicket(body, enrollmentId)
-      .then(({ data }) => {
-        history.push("/dashboard/payment/confirm", { bookInfo: data });
-      })
-      .catch(err => handleServerError(err));
-  }
-
-  function createNewBooking() {
+  function createOrUpdateBooking() {
     const body = createBody();
 
-    booking.postBookTicket(body)
+    booking.postBooking(body)
       .then(({ data }) => {
-        history.push("/dashboard/payment/confirm", { bookInfo: data });
+        history.replace("/dashboard/payment/confirm", { bookInfo: data });
       })
       .catch(err => handleServerError(err));
   }
@@ -155,8 +133,7 @@ export default function Payment({ enrollmentId }) {
         optionsChosen.ticket && optionsChosen.ticket.modality !== "Online" && optionsChosen.hotel &&
         <Footer>
           <Title>
-            Fechado! O total ficou em 
-            <Bold>R$ {optionsChosen.hotel.price + optionsChosen.ticket.price}</Bold>. 
+            Fechado! O total ficou em <Bold>R$ {optionsChosen.hotel.price + optionsChosen.ticket.price}</Bold>. 
             Agora é só confirmar:
           </Title>
           <BookingButton onClick={onSubmit}>RESERVAR INGRESSO</BookingButton>
