@@ -15,7 +15,7 @@ export default function Payment() {
   const [loading, setLoading] = useState(true);
   const promise = enrollment.getPersonalInformations();
   const match = useRouteMatch();
-  
+
   useEffect(() => {
     promise.then(({ data }) => {
       setConfirmEnrollment(data);

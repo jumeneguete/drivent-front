@@ -2,7 +2,7 @@ import AuthenticatedApi from "./AuthenticatedApi";
 import api from "./api";
 
 export default class BookingApi extends AuthenticatedApi {
-  postBookTicket(body) {
+  postBooking(body) {
     return api.post("/booking", body, {
       headers: {
         ...this.getAuthorizationHeader()
