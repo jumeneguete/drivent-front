@@ -25,4 +25,12 @@ export default class BookingApi extends AuthenticatedApi {
       }
     });
   }
+
+  updateBookTicket(body, enrollmentId) {
+    return api.put(`booking/${enrollmentId}`, body, {
+      headers: {
+        ...this.getAuthorizationHeader()
+      }
+    });
+  }
 }

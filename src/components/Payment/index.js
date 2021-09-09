@@ -51,26 +51,54 @@ export default function Payment({ enrollmentId }) {
       toast(validation);
       return;
     }
+    findPreviousBooking();
+  }
+
+  async function findPreviousBooking() {
+    try{
+      await booking.getBookTicketByEnrollmentId(enrollmentId);
+      updateBooking();
+    } catch(e) {
+      //eslint-disable-next-line no-console
+      console.error(e);
+      createNewBooking();
+    }
+  }
+
+  function updateBooking() {
     const body = createBody();
+
+    booking.updateBookTicket(body, enrollmentId)
+      .then(({ data }) => {
+        history.push("/dashboard/payment/confirm", { bookInfo: data });
+      })
+      .catch(err => handleServerError(err));
+  }
+
+  function createNewBooking() {
+    const body = createBody();
+
     booking.postBookTicket(body)
       .then(({ data }) => {
         history.push("/dashboard/payment/confirm", { bookInfo: data });
       })
-      .catch(err => {
-      //eslint-disable-next-line no-console
-        console.error(err);
-        
-        if(err.response) {
-          const details = err.response.data?.details;
-          
-          if(Array.isArray(details))
-            for(const detail of details) toast(detail);
-          else
-            toast("Erro inesperado. Por favor, tente novamente mais tarde.");
-        } else {
-          toast("Não foi possível conectar ao servidor");
-        }
-      });
+      .catch(err => handleServerError(err));
+  }
+
+  function handleServerError(err) {
+    //eslint-disable-next-line no-console
+    console.error(err);
+      
+    if(err.response) {
+      const details = err.response.data?.details;
+    
+      if(Array.isArray(details))
+        for(const detail of details) toast(detail);
+      else
+        toast("Erro inesperado. Por favor, tente novamente mais tarde.");
+    } else {
+      toast("Não foi possível conectar ao servidor");
+    }
   }
 
   function createBody() {
