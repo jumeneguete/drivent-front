@@ -32,7 +32,7 @@ export default function Payment({ enrollmentId }) {
         price: t.price/100,
         isSelected: false
       };
-    }).reverse()));
+    }).reverse())).catch(err => console.error(err)); //eslint-disable-line no-console
   }
 
   function updateHotelOptions() {
@@ -42,7 +42,7 @@ export default function Payment({ enrollmentId }) {
         price: h.price/100,
         isSelected: false
       };
-    })));
+    }))).catch(err => console.error(err)); //eslint-disable-line no-console
   }
 
   function onSubmit() {
@@ -51,26 +51,34 @@ export default function Payment({ enrollmentId }) {
       toast(validation);
       return;
     }
+    createOrUpdateBooking();
+  }
+
+  function createOrUpdateBooking() {
     const body = createBody();
-    booking.postBookTicket(body)
+
+    booking.postBooking(body)
       .then(({ data }) => {
-        history.push("/dashboard/payment/confirm", { bookInfo: data });
+        history.replace("/dashboard/payment/confirm", { bookInfo: data });
       })
-      .catch(err => {
-      //eslint-disable-next-line no-console
-        console.error(err);
-        
-        if(err.response) {
-          const details = err.response.data?.details;
-          
-          if(Array.isArray(details))
-            for(const detail of details) toast(detail);
-          else
-            toast("Erro inesperado. Por favor, tente novamente mais tarde.");
-        } else {
-          toast("Não foi possível conectar ao servidor");
-        }
-      });
+      .catch(err => handleServerError(err));
+  }
+
+  function handleServerError(err) {
+    //eslint-disable-next-line no-console
+    console.error(err);
+      
+    if(err.response) {
+      const details = err.response.data?.details;
+      console.log(err.response); //eslint-disable-line no-console
+    
+      if(Array.isArray(details))
+        for(const detail of details) toast(detail);
+      else
+        toast("Erro inesperado. Por favor, tente novamente mais tarde.");
+    } else {
+      toast("Não foi possível conectar ao servidor");
+    }
   }
 
   function createBody() {
@@ -125,8 +133,7 @@ export default function Payment({ enrollmentId }) {
         optionsChosen.ticket && optionsChosen.ticket.modality !== "Online" && optionsChosen.hotel &&
         <Footer>
           <Title>
-            Fechado! O total ficou em 
-            <Bold>R$ {optionsChosen.hotel.price + optionsChosen.ticket.price}</Bold>. 
+            Fechado! O total ficou em <Bold>R$ {optionsChosen.hotel.price + optionsChosen.ticket.price}</Bold>. 
             Agora é só confirmar:
           </Title>
           <BookingButton onClick={onSubmit}>RESERVAR INGRESSO</BookingButton>
