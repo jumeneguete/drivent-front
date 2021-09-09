@@ -1,4 +1,3 @@
-import Typography from "@material-ui/core/Typography";
 import styled from "styled-components";
 
 export default function NoPaymentActivities() {
@@ -13,10 +12,6 @@ export default function NoPaymentActivities() {
     </>
   );
 }
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
-`;
 
 const MessageContainer = styled.div`
   width: 100%;
