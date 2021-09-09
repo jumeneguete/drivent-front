@@ -8,6 +8,7 @@ import UpdateLocale from "dayjs/plugin/updateLocale";
 import "dayjs/locale/pt-br";
 import Loader from "react-loader-spinner";
 import { toast } from "react-toastify";
+import Schedule from "./Schedule";
 dayjs.extend(UpdateLocale);
 dayjs.updateLocale("pt-br", {
   weekdays: [
@@ -67,8 +68,6 @@ export default function DaysList() {
       .catch((err) => toast(err.resonse.data.message));
   }
 
-  console.log(activitiesOfTheDay);
-
   return (
     <Container>
       {!!days.find((d) => d.isSelected) || (
@@ -93,6 +92,7 @@ export default function DaysList() {
             <Loader width="50" height="50" type="ThreeDots" color="#FA4098" />
           )}
       </ButtonsWrapper>
+      <Schedule { ...{ activitiesOfTheDay } }></Schedule>
     </Container>
   );
 }
