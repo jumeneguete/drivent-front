@@ -25,13 +25,13 @@ export default function BookingHotel({ hotel }) {
             <strong>Quarto reservado</strong> <br /> {number + " " + accomodationType}
           </p>
           <p>
-            <strong>Pessoas no seu quarto</strong> <br /> Você{" "}
+            <strong>Pessoas no seu quarto</strong> <br /> 
             {bookingRoom.length === 1
-              ? null
+              ? "Somente você"
               : bookingRoom.length === bedCount
-                ? `e mais ${bedCount - 1} pessoas`
+                ? `Você e mais ${bedCount - 1} pessoas`
                 : bookingRoom.length < bedCount
-                  ? `e mais ${bookingRoom.length - 1} pessoas`
+                  ? `Você e mais ${bookingRoom.length - 1} pessoas`
                   : null}
           </p>
         </div>
@@ -63,6 +63,7 @@ const StyledHotelButton = styled(Button)`
   p{
     line-height: 16px;
     margin: 14px 0 4px 0;
+    text-transform: initial!important;
   }
 `;
 
