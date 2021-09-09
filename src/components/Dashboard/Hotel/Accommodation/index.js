@@ -8,6 +8,7 @@ import EachHotel from "./EachHotel";
 import Rooms from "./Rooms";
 import useApi from "../../../../hooks/useApi";
 import mediaQueries from "../../../../mediaQueries";
+import BookingHotel from "./BookingHotel";
 
 export default function Accommodation({ hotels }) {
   const api = useApi();
@@ -16,6 +17,7 @@ export default function Accommodation({ hotels }) {
   const [hasBookedRoom, setHasBookedRoom] = useState(false);
   const [chosenHotel, setChosenHotel] = useState(null);
   const [chosenRoom, setChosenRoom] = useState(null);
+  const [bookedRoom, setBookedRoom] = useState([]);
 
   useEffect(() => {
     if (chosenHotel) {
@@ -28,7 +30,8 @@ export default function Accommodation({ hotels }) {
   function submitRoomSelection() {
     api.bookingRoom
       .book(chosenRoom)
-      .then(() => {
+      .then(({ data }) => {
+        setBookedRoom(data);
         setHasBookedRoom(true);
       })
       .catch((error) => {
@@ -50,7 +53,7 @@ export default function Accommodation({ hotels }) {
   return (
     <>
       {hasBookedRoom ? (
-        "em breve"
+        <BookingHotel hotel={bookedRoom}/>
       ) : (
         <>
           <StyledTypography variant="h6" type={"hotelChoice"}>

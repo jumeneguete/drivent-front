@@ -5,6 +5,7 @@ import useApi from "../../../hooks/useApi";
 import { toast } from "react-toastify";
 
 import Accommodation from "../../../components/Dashboard/Hotel/Accommodation";
+import BookingHotel from "../../../components/Dashboard/Hotel/Accommodation/BookingHotel";
 
 class Hotels {
   constructor(error, hotels) {
@@ -43,7 +44,7 @@ export default function Hotel() {
   return (
     <>
       <Header>Escolha de hotel e quarto</Header>
-      {hotels.error? <Reject {...{ hotels }} />: <Accommodation hotels={hotels.hotels}/>}      
+      {hotels.error? <Reject {...{ hotels }} />: hotels.hotels.length === 1? <BookingHotel hotel={hotels.hotels[0]}/> : <Accommodation hotels={hotels.hotels}/>}      
     </>
   );
 }
