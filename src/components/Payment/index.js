@@ -10,7 +10,7 @@ import { useHistory } from "react-router";
 import Loader from "react-loader-spinner";
 
 export default function Payment({ enrollmentId }) {
-  const { booking } = useApi();
+  const { booking, payment } = useApi();
   const history = useHistory();
   const [ticket, setTicket] = useState(null);
   const [hotelOption, setHotelOption] = useState(null);
@@ -32,7 +32,7 @@ export default function Payment({ enrollmentId }) {
         price: t.price/100,
         isSelected: false
       };
-    }).reverse()));
+    }).reverse())).catch(err => console.error(err)); //eslint-disable-line no-console
   }
 
   function updateHotelOptions() {
@@ -42,7 +42,7 @@ export default function Payment({ enrollmentId }) {
         price: h.price/100,
         isSelected: false
       };
-    })));
+    }))).catch(err => console.error(err)); //eslint-disable-line no-console
   }
 
   function onSubmit() {
@@ -56,17 +56,18 @@ export default function Payment({ enrollmentId }) {
 
   async function findPreviousBooking() {
     try{
-      await booking.getBookTicketByEnrollmentId(enrollmentId);
+      await payment.getPaymentConfirmation(enrollmentId);
       updateBooking();
-    } catch(e) {
+    } catch(err) {
       //eslint-disable-next-line no-console
-      console.error(e);
-      createNewBooking();
+      console.error(err.response);
+      if(err.response.status === 404) createNewBooking();
     }
   }
 
   function updateBooking() {
     const body = createBody();
+    delete body.enrollmentId;
 
     booking.updateBookTicket(body, enrollmentId)
       .then(({ data }) => {
@@ -91,6 +92,7 @@ export default function Payment({ enrollmentId }) {
       
     if(err.response) {
       const details = err.response.data?.details;
+      console.log(err.response); //eslint-disable-line no-console
     
       if(Array.isArray(details))
         for(const detail of details) toast(detail);
