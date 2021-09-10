@@ -1,4 +1,3 @@
-import Typography from "@material-ui/core/Typography";
 import styled from "styled-components";
 
 export default function Footer({ children }) {
@@ -13,10 +12,6 @@ export default function Footer({ children }) {
     </>
   );
 }
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
-`;
 
 const MessageContainer = styled.div`
   width: 100%;

@@ -5,6 +5,7 @@ import useApi from "../../../hooks/useApi";
 import { toast } from "react-toastify";
 
 import Accommodation from "../../../components/Dashboard/Hotel/Accommodation";
+import BookingHotel from "../../../components/Dashboard/Hotel/Accommodation/BookingHotel";
 
 class Hotels {
   constructor(error, hotels) {
@@ -16,6 +17,7 @@ class Hotels {
 export default function Hotel() {
   const api = useApi();
   const [hotels, setHotels] = useState(new Hotels(true, []));
+
   useEffect(() => {
     api.hotel
       .getHotelsByUser()
@@ -24,7 +26,7 @@ export default function Hotel() {
       })
       .catch((error) => {
         /* eslint-disable-next-line no-console */
-        console.error(error);
+        console.error(error.response);
         
         const details = error.response.data.details;
 
@@ -36,14 +38,14 @@ export default function Hotel() {
           toast("Não foi possível conectar ao servidor!");
         }
 
-        setHotels(new Hotels(details.join(" "), []));
+        setHotels(new Hotels(error, []));
       });
   }, []);
 
   return (
     <>
       <Header>Escolha de hotel e quarto</Header>
-      {hotels.error? <Reject {...{ hotels }} />: <Accommodation hotels={hotels.hotels}/>}      
+      {hotels.error? <Reject {...{ hotels }} />: hotels.hotels.length === 1? <BookingHotel hotel={hotels.hotels[0]}/> : <Accommodation hotels={hotels.hotels}/>}      
     </>
   );
 }

@@ -11,14 +11,30 @@ export default function Reject({ hotels }) {
     );
   }
 
-  const noPayment =
-    hotels.error ===
-    "Você precisa ter confirmado o pagamento antes de fazer a escolha de hospedagem";
+  function NoHotelOptionMessage() {
+    return (
+      <p>
+        Sua modalidade de ingresso não inclui hospedagem
+        <br />
+        Prossiga para a escolha de atividades
+      </p>
+    );
+  }
+
+  const errorCode = hotels?.error?.response?.data?.driventCode;
+  const noPayment = errorCode === "1";
+  const noHotelOption = errorCode === "2";
 
   return (
     <>
       <Wrapper avalilable={noPayment}>
-        {noPayment ? <NoPaymentMessage /> : "em breve"}
+        {noPayment ? (
+          <NoPaymentMessage />
+        ) : noHotelOption ? (
+          <NoHotelOptionMessage />
+        ) : (
+          "Entre em contato com a organização do evento"
+        )}
       </Wrapper>
     </>
   );
