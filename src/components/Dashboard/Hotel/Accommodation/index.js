@@ -4,17 +4,21 @@ import { useEffect, useState } from "react";
 import Button from "../../../Form/Button";
 import { toast } from "react-toastify";
 
-import EachHotel from "./EachHotel";
 import Rooms from "./Rooms";
 import useApi from "../../../../hooks/useApi";
 import mediaQueries from "../../../../mediaQueries";
 import BookingHotel from "./BookingHotel";
+import Hotel from "./Hotel";
 
-export default function Accommodation({ hotels }) {
+export default function Accommodation({
+  hasBookedRoom,
+  setHasBookedRoom,
+  setHotels,
+  hotels,
+}) {
   const api = useApi();
 
   const [rooms, setRooms] = useState([]);
-  const [hasBookedRoom, setHasBookedRoom] = useState(false);
   const [chosenHotel, setChosenHotel] = useState(null);
   const [chosenRoom, setChosenRoom] = useState(null);
   const [bookedRoom, setBookedRoom] = useState([]);
@@ -33,13 +37,15 @@ export default function Accommodation({ hotels }) {
       .then(({ data }) => {
         setBookedRoom(data);
         setHasBookedRoom(true);
+        setRooms([]);
+        setChosenHotel(null);
+        setChosenRoom(null);
       })
       .catch((error) => {
         /* eslint-disable-next-line no-console */
         console.error(error);
 
-        const details = error.response.data.details;
-
+        const details = error.response.data?.details;
         if (error.response && error.response.details) {
           for (const detail of details) {
             toast(detail);
@@ -53,7 +59,11 @@ export default function Accommodation({ hotels }) {
   return (
     <>
       {hasBookedRoom ? (
-        <BookingHotel hotel={bookedRoom}/>
+        <BookingHotel
+          setHasBookedRoom={setHasBookedRoom}
+          setHotels={setHotels}
+          hotel={bookedRoom}
+        />
       ) : (
         <>
           <StyledTypography variant="h6" type={"hotelChoice"}>
@@ -66,7 +76,7 @@ export default function Accommodation({ hotels }) {
                 state={chosenHotel === n.id ? 1 : 0}
                 key={n.id}
               >
-                <EachHotel key={n.id} hotelInformation={n} />
+                <Hotel key={n.id} hotelInformation={n} />
               </StyledButton>
             ))}
           </HotelContainer>
