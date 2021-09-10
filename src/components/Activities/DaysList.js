@@ -60,12 +60,17 @@ export default function DaysList() {
       } else return { ...d, isSelected: false };
     });
     setDays(newArray);
-    api.activities
-      .getActivitiesOfTheDay(date)
-      .then(({ data }) => {
-        setActivitiesOfTheDay(data);
-      })
-      .catch((err) => toast(err.resonse.data.message));
+
+    if (newArray.find((day) => day.isSelected)) {
+      api.activities
+        .getActivitiesOfTheDay(date)
+        .then(({ data }) => {
+          setActivitiesOfTheDay(data);
+        })
+        .catch((err) => toast(err.resonse.data.message));
+    } else {
+      setActivitiesOfTheDay([]);
+    }
   }
 
   return (
@@ -92,7 +97,7 @@ export default function DaysList() {
             <Loader width="50" height="50" type="ThreeDots" color="#FA4098" />
           )}
       </ButtonsWrapper>
-      <Schedule { ...{ activitiesOfTheDay } }></Schedule>
+      <Schedule {...{ activitiesOfTheDay }}></Schedule>
     </Container>
   );
 }
