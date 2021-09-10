@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
 import Button from "../../../Form/Button";
+import useApi from "../../../../hooks/useApi";
 
-export default function BookingHotel({ hotel }) {
+export default function BookingHotel({ hasBookedRoom, setHasBookedRoom, setHotels, hotel }) {
+  const api = useApi();
   const { id, name, imgUrl, rooms } = hotel;
   const { number, bedCount, bookingRoom } = rooms[0];
 
@@ -12,6 +14,18 @@ export default function BookingHotel({ hotel }) {
     : bedCount === 2
       ? (accomodationType = "(Double)")
       : (accomodationType = "(Triple)");
+
+  function getAllHotels() {
+    api.hotel
+      .getHotelsByUser(1)
+      .then(({ data }) => {
+        console.log(data);
+        setHasBookedRoom(false);
+        setHotels({ error: null, hotels: data });
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <BookingHotelContainer>
       <StyledTypography variant="h6">
@@ -29,12 +43,11 @@ export default function BookingHotel({ hotel }) {
             <strong>Pessoas no seu quarto</strong> <br />
             {bookingRoom.length === 1
               ? "Somente você"
-              : `Você e mais ${bookingRoom.length - 1} pessoas`
-            }
+              : `Você e mais ${bookingRoom.length - 1} pessoas`}
           </p>
         </div>
       </StyledHotelButton>
-      <StyledChangeRoomButton onClick={() => alert("em breve")}>
+      <StyledChangeRoomButton onClick={getAllHotels}>
         Trocar de quarto
       </StyledChangeRoomButton>
     </BookingHotelContainer>

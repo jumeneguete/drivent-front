@@ -17,6 +17,7 @@ class Hotels {
 export default function Hotel() {
   const api = useApi();
   const [hotels, setHotels] = useState(new Hotels(true, []));
+  const [hasBookedRoom, setHasBookedRoom] = useState(false);
 
   useEffect(() => {
     api.hotel
@@ -27,7 +28,7 @@ export default function Hotel() {
       .catch((error) => {
         /* eslint-disable-next-line no-console */
         console.error(error.response);
-        
+
         const details = error.response.data.details;
 
         if (error.response) {
@@ -45,7 +46,23 @@ export default function Hotel() {
   return (
     <>
       <Header>Escolha de hotel e quarto</Header>
-      {hotels.error? <Reject {...{ hotels }} />: hotels.hotels.length === 1? <BookingHotel hotel={hotels.hotels[0]}/> : <Accommodation hotels={hotels.hotels}/>}      
+      {hotels.error ? (
+        <Reject {...{ hotels }} />
+      ) : hotels.hotels.length === 1 ? (
+        <BookingHotel
+          hasBookedRoom={hasBookedRoom}
+          setHasBookedRoom={setHasBookedRoom}
+          setHotels={setHotels}
+          hotel={hotels.hotels[0]}
+        />
+      ) : (
+        <Accommodation
+          hasBookedRoom={hasBookedRoom}
+          setHasBookedRoom={setHasBookedRoom}
+          setHotels={setHotels}
+          hotels={hotels.hotels}
+        />
+      )}
     </>
   );
 }
