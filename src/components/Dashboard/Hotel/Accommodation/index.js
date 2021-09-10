@@ -35,7 +35,6 @@ export default function Accommodation({
     api.bookingRoom
       .book(chosenRoom)
       .then(({ data }) => {
-        console.log(data);
         setBookedRoom(data);
         setHasBookedRoom(true);
         setRooms([]);
@@ -47,7 +46,6 @@ export default function Accommodation({
         console.error(error);
 
         const details = error.response.data?.details;
-        console.log(error.response);
         if (error.response && error.response.details) {
           for (const detail of details) {
             toast(detail);

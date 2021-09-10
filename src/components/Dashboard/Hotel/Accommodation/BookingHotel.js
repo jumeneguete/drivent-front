@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
 import Button from "../../../Form/Button";
 import useApi from "../../../../hooks/useApi";
+import { toast } from "react-toastify";
 
 export default function BookingHotel({ hasBookedRoom, setHasBookedRoom, setHotels, hotel }) {
   const api = useApi();
@@ -19,11 +20,10 @@ export default function BookingHotel({ hasBookedRoom, setHasBookedRoom, setHotel
     api.hotel
       .getHotelsByUser(1)
       .then(({ data }) => {
-        console.log(data);
         setHasBookedRoom(false);
         setHotels({ error: null, hotels: data });
       })
-      .catch((err) => console.log(err));
+      .catch(() => toast("Não foi possível encontrar os hotéis"));
   }
 
   return (
