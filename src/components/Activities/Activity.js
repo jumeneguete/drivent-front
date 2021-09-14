@@ -13,6 +13,8 @@ export default function Activity({ activity }) {
 
   useEffect(() => {
     getActivities();
+    const intervalId = setInterval(() => getActivities(), 3000);
+    return () => clearInterval(intervalId);
   }, []);
 
   function getActivities() {
@@ -22,8 +24,6 @@ export default function Activity({ activity }) {
       setVacancyCount(vaccancy);
     });
   }
-  
-  setInterval(getActivities, 3000);
 
   function transformToDecimal(timeText) {
     const splitTime = timeText.split(":");
