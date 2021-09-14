@@ -24,7 +24,6 @@ export default function Activity({ activity }) {
   }
   
   setInterval(getActivities, 3000);
-  console.log(vacancyCount);
 
   function transformToDecimal(timeText) {
     const splitTime = timeText.split(":");
@@ -38,8 +37,6 @@ export default function Activity({ activity }) {
   let blockHeight = 80 * (endTime - startTime);
   const additionalHeight = (Math.ceil(endTime - startTime) - 1) * 10;
   blockHeight += additionalHeight;
-
-  //const vacancyCount = activity.maxParticipants - activity.participantCount;
 
   return (
     <ActivityWrapper {...{ blockHeight }}>
