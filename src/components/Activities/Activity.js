@@ -1,8 +1,30 @@
 import styled from "styled-components";
 import SignUpButton from "./SignUpButton";
 import SoldOff from "./SoldOff";
+import useApi from "../../hooks/useApi";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function Activity({ activity }) {
+  const api = useApi();
+  const { activities } = useApi();
+
+  const [vacancyCount, setVacancyCount] = useState(0);
+
+  useEffect(() => {
+    getActivities();
+    const intervalId = setInterval(() => getActivities(), 3000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  function getActivities() {
+    api.activities.getAllActivities().then(({ data }) => {
+      const singleActivity = data.find((a) => a.id === activity.id);
+      const vaccancy = singleActivity.maxParticipants - singleActivity.activityBookings.length;
+      setVacancyCount(vaccancy);
+    });
+  }
+
   function transformToDecimal(timeText) {
     const splitTime = timeText.split(":");
     splitTime[0] = parseInt(splitTime[0]);
@@ -16,8 +38,6 @@ export default function Activity({ activity }) {
   const additionalHeight = (Math.ceil(endTime - startTime) - 1) * 10;
   blockHeight += additionalHeight;
 
-  const vacancyCount = activity.maxParticipants - activity.participantCount;
-
   return (
     <ActivityWrapper {...{ blockHeight }}>
       <LeftSide>
@@ -27,7 +47,11 @@ export default function Activity({ activity }) {
         </ActivityTime>
       </LeftSide>
       <RightSide>
-        {vacancyCount > 0 ? <SignUpButton {...{ vacancyCount }} /> : <SoldOff/>}
+        {vacancyCount > 0 ? (
+          <SignUpButton {...{ vacancyCount }} />
+        ) : (
+          <SoldOff />
+        )}
       </RightSide>
     </ActivityWrapper>
   );
