@@ -148,7 +148,14 @@ export default function PersonalInformationForm() {
 
   return (
     <>
-      <StyledTypography variant="h4">Suas Informações</StyledTypography>
+      <EnrollmentsData>
+        <StyledTypography variant="h4">Suas Informações</StyledTypography>
+        {data.image ? (
+          <img src={`${data.image}`} />
+        ) : (
+          <img src="https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper-thumbnail.png" />
+        )}
+      </EnrollmentsData>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <FormWrapper onSubmit={handleSubmit}>
           <InputWrapper>
@@ -294,6 +301,8 @@ export default function PersonalInformationForm() {
                 id="upload-photo"
                 name="upload-photo"
                 type="file"
+                value={data.image || ""}
+                onChange={handleChange("image")}
               />
 
               <Fab
@@ -302,7 +311,14 @@ export default function PersonalInformationForm() {
                 component="span"
                 aria-label="add"
                 variant="extended"
-                style={{ backgroundColor: "#DDDDDD", color: "#000000", marginTop: "15px", padding: "15px", borderRadius: "5px", backgroundColor: "#FFEED2" }}
+                style={{
+                  backgroundColor: "#DDDDDD",
+                  color: "#000000",
+                  marginTop: "15px",
+                  padding: "15px",
+                  borderRadius: "5px",
+                  backgroundColor: "#FFEED2",
+                }}
               >
                 Imagem de Perfil
               </Fab>
@@ -330,5 +346,18 @@ const SubmitContainer = styled.div`
 
   > button {
     margin-top: 0 !important;
+  }
+`;
+
+const EnrollmentsData = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  img{
+    margin-right: 30px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
   }
 `;
