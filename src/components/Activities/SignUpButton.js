@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { BiLogIn } from "react-icons/bi";
 
-export default function SignUpButton({ vacancyCount }) {
+export default function SignUpButton({ vacancyCount, postEnrollment }) {
   return (
-    <SignUpWrapper>
+    <SignUpWrapper onClick={postEnrollment}>
       <BiLogIn />
       <p>{vacancyCount} vagas</p>
     </SignUpWrapper>
@@ -17,6 +17,7 @@ const SignUpWrapper = styled.button`
   border: none;
   font-size: 26px;
   cursor: pointer;
+  background: none;
 
   p {
     font-size: 9px;

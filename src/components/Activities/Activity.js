@@ -4,12 +4,12 @@ import SoldOff from "./SoldOff";
 import useApi from "../../hooks/useApi";
 import { useState } from "react";
 import { useEffect } from "react";
+import Loader from "react-loader-spinner";
 
 export default function Activity({ activity }) {
-  const api = useApi();
-  const { activities } = useApi();
-
+  const { activities, enrollment, booking } = useApi();
   const [vacancyCount, setVacancyCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getActivities();
@@ -17,12 +17,11 @@ export default function Activity({ activity }) {
     return () => clearInterval(intervalId);
   }, []);
 
-  function getActivities() {
-    api.activities.getAllActivities().then(({ data }) => {
-      const singleActivity = data.find((a) => a.id === activity.id);
-      const vaccancy = singleActivity.maxParticipants - singleActivity.activityBookings.length;
-      setVacancyCount(vaccancy);
-    });
+  async function getActivities() {
+    const { data } = await activities.getAllActivities();
+    const singleActivity = data.find((a) => a.id === activity.id);
+    const vaccancy = singleActivity.maxParticipants - singleActivity.activityBookings.length;
+    setVacancyCount(vaccancy);
   }
 
   function transformToDecimal(timeText) {
@@ -32,6 +31,24 @@ export default function Activity({ activity }) {
     return splitTime[0] + splitTime[1];
   }
 
+  async function getBookingId() {
+    const { data } = await enrollment.getPersonalInformations();
+    return await booking.getBookTicketByEnrollmentId(data.id);
+  }
+
+  async function postEnrollment() {
+    setIsLoading(true);
+    const { data } = await getBookingId();
+    const body = {
+      activityId: activity.id,
+      bookingId: data.id
+    };
+    activities.postActivityEnrollment(body).then(async() => {
+      await getActivities();
+      setIsLoading(false);
+    });
+  }
+
   const startTime = transformToDecimal(activity.startsAt);
   const endTime = transformToDecimal(activity.endsAt);
   let blockHeight = 80 * (endTime - startTime);
@@ -39,7 +56,7 @@ export default function Activity({ activity }) {
   blockHeight += additionalHeight;
 
   return (
-    <ActivityWrapper {...{ blockHeight }}>
+    <ActivityWrapper {...{ blockHeight  }}>
       <LeftSide>
         <ActivityName>{activity.name}</ActivityName>
         <ActivityTime>
@@ -47,11 +64,12 @@ export default function Activity({ activity }) {
         </ActivityTime>
       </LeftSide>
       <RightSide>
-        {vacancyCount > 0 ? (
-          <SignUpButton {...{ vacancyCount }} />
-        ) : (
-          <SoldOff />
-        )}
+        {isLoading ? <Loader color="#FA4098" height={20} width={35} type="ThreeDots"/> : 
+          vacancyCount > 0 ? (
+            <SignUpButton {...{ vacancyCount, postEnrollment }} />
+          ) : (
+            <SoldOff />
+          )}
       </RightSide>
     </ActivityWrapper>
   );
@@ -69,7 +87,7 @@ const ActivityTime = styled.p`
 const LeftSide = styled.div`
   flex-grow: 1;
   flex-shrink: 1;
-  border-right: 1px solid #cfcfcf;
+  border-right: 1px solid rgba(207, 207, 207, 0.6);
   padding-right: 10px;
 `;
 
