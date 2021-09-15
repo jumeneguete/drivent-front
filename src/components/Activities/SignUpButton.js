@@ -18,10 +18,10 @@ const SignUpWrapper = styled.button`
   font-size: 26px;
   cursor: pointer;
   background: none;
+  padding-left: 12px;
 
   p {
     font-size: 9px;
     text-align: center;
-    padding-left: 5px;
   }
 `;
