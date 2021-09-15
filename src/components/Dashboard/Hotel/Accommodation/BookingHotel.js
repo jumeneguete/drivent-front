@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 export default function BookingHotel({ hasBookedRoom, setHasBookedRoom, setHotels, hotel }) {
   const api = useApi();
-  const { id, name, imgUrl, rooms } = hotel;
+  const { name, imgUrl, rooms } = hotel;
   const { number, bedCount, bookingRoom } = rooms[0];
 
   let accomodationType;
