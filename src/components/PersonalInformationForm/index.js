@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import CustomParseFormat from "dayjs/plugin/customParseFormat";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MenuItem from "@material-ui/core/MenuItem";
+import Fab from "@material-ui/core/Fab";
 
 import useApi from "../../hooks/useApi";
 import { useForm } from "../../hooks/useForm";
@@ -42,6 +43,7 @@ export default function PersonalInformationForm() {
         name: data.name,
         cpf: data.cpf,
         birthday: data.birthday,
+        image: data.image,
         address: {
           cep: data.cep,
           street: data.street,
@@ -51,22 +53,27 @@ export default function PersonalInformationForm() {
           neighborhood: data.neighborhood,
           addressDetail: data.addressDetail,
         },
-        phone: data.phone.replace(/[^0-9]+/g, "").replace(/^(\d{2})(9?\d{4})(\d{4})$/, "($1) $2-$3"),
+        phone: data.phone
+          .replace(/[^0-9]+/g, "")
+          .replace(/^(\d{2})(9?\d{4})(\d{4})$/, "($1) $2-$3"),
       };
 
-      enrollment.save(newData).then(() => {
-        toast("Salvo com sucesso!");
-      }).catch((error) => {
-        if (error.response?.data?.details) {
-          for (const detail of error.response.data.details) {
-            toast(detail);
+      enrollment
+        .save(newData)
+        .then(() => {
+          toast("Salvo com sucesso!");
+        })
+        .catch((error) => {
+          if (error.response?.data?.details) {
+            for (const detail of error.response.data.details) {
+              toast(detail);
+            }
+          } else {
+            toast("Não foi possível");
           }
-        } else {
-          toast("Não foi possível");
-        }
-        /* eslint-disable-next-line no-console */
-        console.log(error);
-      });
+          /* eslint-disable-next-line no-console */
+          console.log(error);
+        });
     },
 
     initialValues: {
@@ -81,22 +88,24 @@ export default function PersonalInformationForm() {
       state: "",
       neighborhood: "",
       addressDetail: "",
+      image: "",
     },
   });
 
   useEffect(() => {
-    enrollment.getPersonalInformations().then(response => {
+    enrollment.getPersonalInformations().then((response) => {
       if (response.status !== 200) {
         return;
       }
-      
-      const { name, cpf, birthday, phone, address } = response.data;
+
+      const { name, cpf, birthday, phone, address, image } = response.data;
 
       setData({
         name,
         cpf,
         birthday,
         phone,
+        image,
         cep: address.cep,
         street: address.street,
         city: address.city,
@@ -120,7 +129,7 @@ export default function PersonalInformationForm() {
     if (isValidCep(valueWithoutMask)) {
       const newDataValues = {
         ...data,
-        [name]: value
+        [name]: value,
       };
 
       setDynamicInputIsLoading(true);
@@ -135,7 +144,7 @@ export default function PersonalInformationForm() {
         });
       });
     }
-  };
+  }
 
   return (
     <>
@@ -173,9 +182,14 @@ export default function PersonalInformationForm() {
               label="Data de Nascimento"
               inputVariant="outlined"
               clearable
-              value={data.birthday && dayjs(data.birthday, "DD-MM-YYYY").toString()}
+              value={
+                data.birthday && dayjs(data.birthday, "DD-MM-YYYY").toString()
+              }
               onChange={(date) => {
-                customHandleChange("birthday", (d) => d && dayjs(d).format("DD-MM-YYYY"))(date);
+                customHandleChange(
+                  "birthday",
+                  (d) => d && dayjs(d).format("DD-MM-YYYY")
+                )(date);
               }}
             />
             {errors.birthday && <ErrorMsg>{errors.birthday}</ErrorMsg>}
@@ -183,7 +197,9 @@ export default function PersonalInformationForm() {
           <InputWrapper>
             <Input
               label="Telefone"
-              mask={data.phone.length < 15 ? "(99) 9999-99999" : "(99) 99999-9999"} // o 9 extra no primeiro é para permitir digitar um número a mais e então passar pra outra máscara - gambiarra? temos
+              mask={
+                data.phone.length < 15 ? "(99) 9999-99999" : "(99) 99999-9999"
+              } // o 9 extra no primeiro é para permitir digitar um número a mais e então passar pra outra máscara - gambiarra? temos
               name="phone"
               value={data.phone || ""}
               onChange={handleChange("phone")}
@@ -271,7 +287,28 @@ export default function PersonalInformationForm() {
               onChange={handleChange("addressDetail")}
             />
           </InputWrapper>
-          
+          <InputWrapper>
+            <label htmlFor="upload-photo">
+              <input
+                style={{ display: "none" }}
+                id="upload-photo"
+                name="upload-photo"
+                type="file"
+              />
+
+              <Fab
+                color="secondary"
+                size="small"
+                component="span"
+                aria-label="add"
+                variant="extended"
+                style={{ backgroundColor: "#DDDDDD", color: "#000000", marginTop: "15px", padding: "15px", borderRadius: "5px", backgroundColor: "#FFEED2" }}
+              >
+                Imagem de Perfil
+              </Fab>
+            </label>
+          </InputWrapper>
+
           <SubmitContainer>
             <Button type="submit" disabled={dynamicInputIsLoading}>
               Salvar
@@ -284,12 +321,12 @@ export default function PersonalInformationForm() {
 }
 
 const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
+  margin-bottom: 20px !important;
 `;
 
 const SubmitContainer = styled.div`
-  margin-top: 40px!important;
-  width: 100%!important;
+  margin-top: 40px !important;
+  width: 100% !important;
 
   > button {
     margin-top: 0 !important;
