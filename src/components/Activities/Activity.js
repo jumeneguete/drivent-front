@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Loader from "react-loader-spinner";
 import Enrolled from "./Enrolled";
+import { toast } from "react-toastify";
 
 export default function Activity({ activity }) {
   const { activities, enrollment, booking } = useApi();
@@ -55,6 +56,11 @@ export default function Activity({ activity }) {
     };
     activities.postActivityEnrollment(body).then(async() => {
       await getActivities();
+      setIsLoading(false);
+    }).catch(err => {
+      //eslint-disable-next-line no-console
+      console.error(err);
+      toast(err.response.data.message);
       setIsLoading(false);
     });
   }
