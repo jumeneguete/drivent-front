@@ -34,12 +34,13 @@ export default function SignIn() {
       console.error(error);
       
       if (error.response) {
-        for (const detail of error.response.data.details) {
-          toast(detail);
-        }
+        /* eslint-disable-next-line no-console */
+        console.error(error.response.data);
+        if(error.response.status === 401) toast("Credenciais inválidas");
       } else {
         toast("Não foi possível conectar ao servidor!");
       }
+      setLoadingSignIn(false);
     }).then(() => {
       setLoadingSignIn(false);
     });
@@ -61,6 +62,7 @@ export default function SignIn() {
       </Row>
       <Row>
         <Link to="/enroll">Não possui login? Inscreva-se</Link>
+        <Link to="/retrieve-password">Esqueceu sua senha?</Link>
       </Row>
     </AuthLayout>
   );
