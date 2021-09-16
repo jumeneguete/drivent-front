@@ -24,12 +24,18 @@ export default function Accommodation({
   const [bookedRoom, setBookedRoom] = useState([]);
 
   useEffect(() => {
+    getRoomsByHotelId();
+    const intervalId = setInterval(() => getRoomsByHotelId(), 3000);
+    return () => clearInterval(intervalId);
+  }, [chosenHotel]);
+
+  function getRoomsByHotelId() {
     if (chosenHotel) {
       api.room.getRoomsByHotel(chosenHotel).then(({ data }) => {
         setRooms(data);
       });
     }
-  }, [chosenHotel]);
+  }
 
   function submitRoomSelection() {
     api.bookingRoom

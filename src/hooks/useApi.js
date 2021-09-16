@@ -9,6 +9,7 @@ import RoomApi from "../services/RoomApi";
 import BookingRoomApi from "../services/BookingRoomApi";
 import PaymentApi from "../services/PaymentApi";
 import BookingApi from "../services/BookingApi";
+import CertificateApi from "../services/CertificateAPI";
 
 export default function useApi() {
   return {
@@ -22,6 +23,7 @@ export default function useApi() {
     bookingRoom: new BookingRoomApi(),
     booking: new BookingApi(),
     payment: new PaymentApi(),
-    hotel: new HotelApi()
+    hotel: new HotelApi(),
+    certificate: new CertificateApi()
   };
 }
