@@ -219,7 +219,7 @@ export default function PersonalInformationForm() {
               label="Telefone"
               mask={
                 data.phone.length < 15 ? "(99) 9999-99999" : "(99) 99999-9999"
-              } // o 9 extra no primeiro é para permitir digitar um número a mais e então passar pra outra máscara - gambiarra? temos
+              } 
               name="phone"
               value={data.phone || ""}
               onChange={handleChange("phone")}
