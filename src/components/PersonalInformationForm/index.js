@@ -44,7 +44,7 @@ export default function PersonalInformationForm() {
         name: data.name,
         cpf: data.cpf,
         birthday: data.birthday,
-        image: "data:image/png;base64," + btoa(data.image),
+        image: data.imageFile,
         address: {
           cep: data.cep,
           street: data.street,
@@ -107,7 +107,7 @@ export default function PersonalInformationForm() {
         cpf,
         birthday,
         phone,
-        image: atob(image.substring(22)),
+        image,
         cep: address.cep,
         street: address.street,
         city: address.city,
@@ -115,9 +115,22 @@ export default function PersonalInformationForm() {
         number: address.number,
         neighborhood: address.neighborhood,
         addressDetail: address.addressDetail,
+        imageFile: null,
       });
     });
   }, []);
+
+  function updateFile(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result.toString();
+      const newData = { ...data };
+      newData.imageFile = base64String;
+      setData(newData);
+    };
+    reader.readAsDataURL(file);
+  }
 
   function isValidCep(cep) {
     return cep.length === 8;
@@ -147,13 +160,13 @@ export default function PersonalInformationForm() {
       });
     }
   }
-  console.log(data.image, "local");
+
   return (
     <>
       <EnrollmentsData>
         <StyledTypography variant="h4">Suas Informações</StyledTypography>
         {data.image ? (
-          <StyledTypography variant="h6">Em breve</StyledTypography>
+          <img src={data.image} alt="avatar" />
         ) : (
           <img src="https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper-thumbnail.png" />
         )}
@@ -297,14 +310,13 @@ export default function PersonalInformationForm() {
             />
           </InputWrapper>
           <InputWrapper>
-            <label htmlFor="image">
+            <label htmlFor="imageFile">
               <input
                 style={{ display: "none" }}
-                id="image"
-                name="image"
+                id="imageFile"
+                name="imageFile"
                 type="file"
-                value={data.image || ""}
-                onChange={handleChange("image")}
+                onChange={(e) => updateFile(e)}
               />
 
               <Fab
