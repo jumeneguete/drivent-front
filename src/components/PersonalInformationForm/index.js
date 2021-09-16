@@ -26,6 +26,7 @@ dayjs.extend(CustomParseFormat);
 
 export default function PersonalInformationForm() {
   const [dynamicInputIsLoading, setDynamicInputIsLoading] = useState(false);
+  const [fileValue, setFileValues] = useState(null);
   const { enrollment, cep } = useApi();
 
   const {
@@ -43,7 +44,7 @@ export default function PersonalInformationForm() {
         name: data.name,
         cpf: data.cpf,
         birthday: data.birthday,
-        image: data.image,
+        image: "data:image/png;base64," + btoa(data.image),
         address: {
           cep: data.cep,
           street: data.street,
@@ -99,13 +100,14 @@ export default function PersonalInformationForm() {
       }
 
       const { name, cpf, birthday, phone, address, image } = response.data;
+      console.log(response.data);
 
       setData({
         name,
         cpf,
         birthday,
         phone,
-        image,
+        image: atob(image.substring(22)),
         cep: address.cep,
         street: address.street,
         city: address.city,
@@ -145,13 +147,13 @@ export default function PersonalInformationForm() {
       });
     }
   }
-
+  console.log(data.image, "local");
   return (
     <>
       <EnrollmentsData>
         <StyledTypography variant="h4">Suas Informações</StyledTypography>
         {data.image ? (
-          <img src={`${data.image}`} />
+          <StyledTypography variant="h6">Em breve</StyledTypography>
         ) : (
           <img src="https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper-thumbnail.png" />
         )}
@@ -295,11 +297,11 @@ export default function PersonalInformationForm() {
             />
           </InputWrapper>
           <InputWrapper>
-            <label htmlFor="upload-photo">
+            <label htmlFor="image">
               <input
                 style={{ display: "none" }}
-                id="upload-photo"
-                name="upload-photo"
+                id="image"
+                name="image"
                 type="file"
                 value={data.image || ""}
                 onChange={handleChange("image")}
@@ -353,7 +355,7 @@ const EnrollmentsData = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  img{
+  img {
     margin-right: 30px;
     width: 100px;
     height: 100px;
