@@ -5,13 +5,13 @@ import AuthLayout from "../../layouts/Auth";
 import Input from "../../components/Form/Input";
 import Button from "../../components/Form/Button";
 import Link from "../../components/Link";
-import { Row, Title, Label, Form, Message } from "../../components/Auth";
+import { Row, Title, Label, Form } from "../../components/Auth";
 import { toast } from "react-toastify";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
 
 import useApi from "../../hooks/useApi";
-import EmailSent from "../../components/NewPassword/EmailSent";
+import Finalization from "../../components/NewPassword/Finalization";
 import Confirmation from "../../components/NewPassword/Confirmation";
 
 export default function RetrievePassword() {
@@ -50,23 +50,26 @@ export default function RetrievePassword() {
         <Title>{eventInfo.eventTitle}</Title>
       </Row>
       {
-        sent ? <EmailSent /> : confirmation ? <Confirmation {...{ submit, email, setConfirmation }}/>
-          :
-          <Row>
-            <Label>Recuperação de senha</Label>
-            <Form onSubmit={submit}>
-              <Input 
-                label="E-mail" 
-                helperText="Digite o E-mail cadastrado no evento" 
-                type="text" 
-                fullWidth={true} 
-                value={email} 
-                onChange={e => setEmail(e.target.value)} 
-              />
+        sent ? 
+          <Finalization {...{ label: "Recuperar senha", text: "E-mail enviado!" }} /> 
+          : confirmation ? 
+            <Confirmation {...{ submit, email, setConfirmation }}/>
+            :
+            <Row>
+              <Label>Recuperação de senha</Label>
+              <Form onSubmit={submit}>
+                <Input 
+                  label="E-mail" 
+                  helperText="Digite o E-mail cadastrado no evento" 
+                  type="text" 
+                  fullWidth={true} 
+                  value={email} 
+                  onChange={e => setEmail(e.target.value)} 
+                />
           
-              <Button type="submit" color="primary" fullWidth disabled={!email}>Solicitar Nova Senha</Button>
-            </Form>
-          </Row>
+                <Button type="submit" color="primary" fullWidth disabled={!email}>Solicitar Nova Senha</Button>
+              </Form>
+            </Row>
       }
       <Row>
         <Link hidden={!!sent} to="/sign-in">Voltar</Link>

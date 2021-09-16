@@ -4,18 +4,17 @@ import { FaCheckCircle } from "react-icons/fa";
 import Button from "../Form/Button";
 import { useHistory } from "react-router";
 
-export default function EmailSent() {
+export default function Finalization({ label, text }) {
   const history = useHistory();
 
   return (
     <Row>
-      <Label>Recuperação de senha</Label>
+      <Label>{label}</Label>
       <Message>
         <FaCheckCircle className="icon"/>
-         E-mail enviado!
+        {text}
       </Message>
-          
-      <Button color="primary" fullWidth onClick={() => history.push("/sign-in")}>Retornar ao login</Button>
+      <StyledButton color="primary" fullWidth onClick={() => history.push("/sign-in")}>Retornar ao login</StyledButton>
       
     </Row>
   );
@@ -34,4 +33,8 @@ const Message = styled.h3`
     color: green;
     font-size: 40px;
   }
+`;
+
+const StyledButton = styled(Button)`
+  margin-bottom: 50px;
 `;

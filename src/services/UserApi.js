@@ -8,4 +8,8 @@ export default class UserApi {
   requestNewPassword(email) {
     return api.post("/users/reset-password", { email });
   }
+
+  createNewPassword(body) {
+    return api.post("/users/new-password", body);
+  }
 }
