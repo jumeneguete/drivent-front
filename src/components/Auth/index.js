@@ -26,4 +26,31 @@ export const Row = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
+  gap: 10px;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+`;
+
+export const Message = styled.h3`
+  line-height: 30px;
+  font-size: 20px;
+  bold {
+    font-weight: 700;
+    background-size: 100%;
+    cursor: pointer;
+
+    &:hover{
+      background-clip: text;
+      background-image: linear-gradient(45deg, #FA4797, #FFD380);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; 
+      -moz-background-clip: text;
+      -moz-text-fill-color: transparent;
+    }
+  }
 `;

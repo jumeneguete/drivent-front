@@ -62,6 +62,7 @@ export default function SignIn() {
       </Row>
       <Row>
         <Link to="/enroll">Não possui login? Inscreva-se</Link>
+        <Link to="/retrieve-password">Esqueceu sua senha?</Link>
       </Row>
     </AuthLayout>
   );

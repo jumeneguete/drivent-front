@@ -12,6 +12,7 @@ import Countdown from "./pages/Countdown";
 import Enroll from "./pages/Enroll";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
+import RetrievePassword from "./pages/RetrievePassword";
 
 import EventInfoContext, { EventInfoProvider } from "./contexts/EventInfoContext";
 import UserContext, { UserProvider } from "./contexts/UserContext";
@@ -34,6 +35,10 @@ export default function App() {
 
               <ConditionalRoute check={ensureCountdownOver} path="/sign-in" exact>
                 <SignIn />
+              </ConditionalRoute>
+
+              <ConditionalRoute check={ensureCountdownOver} path="/retrieve-password" exact>
+                <RetrievePassword />
               </ConditionalRoute>
 
               <ConditionalRoute check={ensureAuthenticated} path="/dashboard">
