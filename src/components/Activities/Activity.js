@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 export default function Activity({ activity }) {
   const { activities, enrollment, booking } = useApi();
-  const [vacancyCount, setVacancyCount] = useState(0);
+  const [vacancyCount, setVacancyCount] = useState(activity.maxParticipants - activity.participantCount);
   const [isLoading, setIsLoading] = useState(false);
   const [isEnrolled, setIsEnrolled] = useState(false);
 
